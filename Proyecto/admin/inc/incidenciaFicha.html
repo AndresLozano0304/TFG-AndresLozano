@@ -1,0 +1,452 @@
+<div id="incidenciaFicha">
+    <form id="incidenciaFichaForm">
+        <input type="text" id="incidenciaId" hidden name="incidenciaId">
+        <input type="text" id="estado" hidden name="estado">
+        <div class="row">
+            <div class="col-4">
+                <!-- FECHA -->
+                <div class="form-group">
+                    <label for="FECHA">Fecha</label>
+                    <input type="date" id="FECHA" name="FECHA"  class="form-control datosParte camposDatos" desc="fecha">
+                </div>
+            </div>
+            <div class="col-8">
+                <!-- USUARIO -->
+                <div class="form-group">
+                    <label for="USUARIO_ID">Trabajador</label>
+                    <select id="USUARIO_ID" name="USUARIO_ID" class="form-control datosParte camposDatos" desc='Usuario'>
+                        <option value="no">Sin usuario</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <!-- PARTE -->
+                <div class="form-group">
+                    <label for="parte">Parte</label>
+                    <select id="parte" name='parte' class="form-control" disabled>
+                        <option value="no">Sin Parte</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-4">
+                <!-- GASTO -->
+                <!-- <div class="form-group">
+                    <label for="gasto">Gasto</label>
+                    <select id="gasto" name="gasto" class="form-control" disabled>
+                        <option value="no">Sin gastos asociados</option>
+                    </select>
+                </div> -->
+            </div>
+            <div class="col-4">
+                <!-- TIPO -->
+                <div class="form-group">
+                    <label for="tipo">tipo de Parte</label>
+                    <select id="tipo" name="tipo" class="form-control" disabled>
+                        <option value="usuario">creado por usuario</option>
+                        <option value="cron">creado por la web</option>
+                        <option value="administrador" selected>creado por el administrador</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-12">
+                <!-- MOTIVO -->
+                <div class="form-floating">
+                    <textarea class="form-control camposDatos" placeholder="su comentario" name="MOTIVO" id="MOTIVO" desc="motivo"></textarea>
+                    <label for="MOTIVO">Motivo</label>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <!-- PARTE - CREAR - MOD -->
+        <div class="row">
+            <div class="col-4">
+                <button class="btn btn-primary accionesPartes" id='addParte'>Añadir Parte</button>
+                <button class="btn btn-primary accionesPartes" id='modParte'>Cerrar Parte</button>
+            </div>
+        </div>
+        <div id="parteDiv" class="card p-2">
+            <!-- NUEVO PARTE -->
+            <div class="row">
+                <div class="col-6">
+                    <label for="hentrada" class="form-label">Hora Entrada <span class="far fa-clock"></span>
+                    </label>
+                    <div class="input-group mb-3">
+                        <input type="number" class="form-control campoParte" id='hentrada' step='1' min='0' max='23'
+                            desc='hora de entrada'>
+                        <span class="input-group-text">:</span>
+                        <input type="number" class="form-control campoParte" id='mentrada' step='1' min='0' max='59'
+                            desc='minutos de entrada'>
+                    </div>
+                    <input type="text" id="fechaEntrada" name="fechaEntrada"  hidden>
+                    
+                </div>
+                <div class="col-6">
+                    <label for="hsalida" class="form-label">Hora Salida <span class="fas fa-stopwatch"></span></label>
+                    <div class="input-group mb-3">
+                        <input type="number" class="form-control campoParte" id='hsalida' step='1' min='0' max='23'
+                            desc='hora de salida'>
+                        <span class="input-group-text">:</span>
+                        <input type="number" class="form-control campoParte" id='msalida' step='1' min='0' max='59'
+                            desc='minutos de salida'>
+                    </div>
+                    <input type="text" id="fechaSalida" name="fechaSalida" hidden>
+                </div>
+
+            </div>
+        </div>
+        <hr>
+        <!-- GASTO - CREAR - MOD -->
+        <!-- <div class="row">
+            <div class="col-4">
+                <button class="btn btn-secondary accionesGastos" id='addGastoIncidencia'>Añadir Gasto</button>
+                <button class="btn btn-secondary accionesGastos" id='modGastoIncidencia'>Modificar Gasto</button>
+            </div>
+        </div>
+        <div id="gastoDiv" class='card p-2'>
+        </div>
+        <hr> -->
+        <!-- ITEMS -->
+        <h5>Items relacionados</h5>
+        <div id="listadoItems"></div>
+        <br>
+        <div class="row">
+            <div class="col-12">
+                <!-- NUEVO ITEM -->
+                <div class="form-floating">
+                    <textarea class="form-control camposDatos" placeholder="su comentario" id="nuevoItem" name="nuevoItem" desc="nuevo Item"></textarea>
+                    <label for="nuevoItem">Nuevo item</label>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row" id="botonesAcciones">
+            <div class="col-4"></div>
+            <div class="col-4">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-primary" id='addComentario'>Añadir</button>
+                    <button type="button" class="btn btn-success" id='addCerrarComentario'>Añadir y Cerrar</button>
+                </div>
+            </div>
+            <div class="col-4"></div>
+        </div>
+    </form>
+    <br>
+    <div class="alert alert-danger" id='erroresIncidencias'>
+    </div>
+</div>
+
+<script>
+    //VARIABLES
+    parteVista = false;
+    gastoVista = false;
+    modParteEstado = false;
+    modGastoEstado = false;
+    addParteVariable = false;
+    addGastoVariable = false;
+    //DISPARADORES
+    $("form").submit(function(e){
+        e.preventDefault();
+    });
+
+    $("#addParte").click(function () {
+        console.log("click Parte");
+        if (parteVista) {
+            parteVista = false;
+            addParteVariable = false;
+            $("#parteDiv").hide();
+        } else {
+            parteVista = true;
+            addParteVariable = true;
+            $("#parteDiv").show();
+
+        }
+    });
+    $("#addGastoIncidencia").click(function () {
+        console.log("click Gasto");
+        if (gastoVista) {
+            gastoVista = false;
+            $("#gastoDiv").empty();
+            $("#gastoDiv").hide();
+            addGastoVariable = false;
+        } else {
+            gastoVista = true;
+            addGastoVariable = true;
+            $("#gastoDiv").load("inc/gastosFicha.html #gastoCampos", function () {
+                $(".add").hide();
+                $(".mod").hide();
+                selectTarjeta = $("#TARJETA_ID");
+                cargaTarjetasUsuario(selectTarjeta, $("#USUARIO_ID").val());
+                $(".soloGasto").empty();
+                $("#FOTO").change(function () {
+                vistaPrevia(this, "#gastoDemo");
+    }
+    );
+            });
+            $("#gastoDiv").show();
+
+        }
+    });
+
+    $(".datosParte").change(function () {
+        fecha = $("#FECHA").val();
+        usuario = $("#USUARIO_ID").val();
+        //RESETEAMOS VARIABLES Y VISTAS
+        parteVista = false;
+        gastoVista = false;
+        modParteEstado = false;
+        modGastoEstado = false;
+        addParteVariable = false;
+        addGastoVariable = false;
+        $("#modGastoIncidencia").hide();
+        $("#modParte").hide();
+        $("#parteDiv").hide();
+        $("#gastoDiv").hide();
+        $("#erroresIncidencias").hide();
+        $("#gastoDiv").empty();
+
+        if (existe(fecha) && existe(usuario) && usuario != 'no') {
+            
+            //PARTES
+            parteSelect = $("#parte");
+            
+            cargaPartes(parteSelect, fecha, usuario);
+            $("#parte").prop("disabled", false);
+            $("#partediv").empty();
+            $("#partediv").hide();
+            //GASTOS
+            gastoSelect = $("#gasto");
+            gastoSelect.empty();
+            //cargaGastoIncidencia(gastoSelect, fecha, usuario);
+            $("#gasto").prop("disabled", false);
+            $("#gastoDiv").empty();
+            $("#gastoDiv").hide();
+        } else {
+            $("#parte").empty();
+            $("#parte").append("<option value='no'>Sin Partes</option>");
+            $("#gasto").empty();
+            $("#gasto").append("<option value='no'>Sin Gastos</option>");
+            $("#parte").prop("disabled", true);
+            $("#gasto").prop("disabled", true);
+        }
+    });
+
+    $("#parte").change(function () {
+        if ($("#parte").val() == 'no') {
+            $("#addParte").show();
+            $("#modParte").hide();
+
+        } else {
+            $("#addParte").hide();
+            horaSalida = $("#parte option:selected").attr("hfin");
+            if (horaSalida == ' - ') {
+                $("#modParte").show();
+            } else {
+                $("#modParte").hide();
+            }
+        }
+    });
+
+    $("#modParte").click(function () {
+        console.log("cerrar Parte");
+        if (parteVista) {
+            parteVista = false;
+            modParteEstado = false;
+            $("#parteDiv").hide();
+        } else {
+            parteVista = true;
+            $("#parteDiv").show();
+            modParteEstado = true;
+            horaEntrada = $("#parte option:selected").attr("hinicio");
+            horaEntradaArray = horaEntrada.split(":");
+            $("#hentrada").val(horaEntradaArray[0]);
+            $("#mentrada").val(horaEntradaArray[1]);
+            $("#hentrada").prop("disabled", true);
+            $("#mentrada").prop("disabled", true);
+        }
+    });
+
+    $("#gasto").change(function () {
+        if ($("#gasto").val() == 'no') {
+            $("#addGastoIncidencia").show();
+            $("#modGastoIncidencia").hide();
+
+        } else {
+            $("#addGastoIncidencia").hide();
+            if (horaSalida = ' - ') {
+                $("#modGastoIncidencia").show();
+            } else {
+                $("#modGastoIncidencia").hide();
+            }
+        }
+    });
+
+
+    $("#modGastoIncidencia").click(function () {
+        if (gastoVista) {
+            gastoVista = false;
+            modGastoEstado = false;
+            $("#gastoDiv").empty();
+            $("#gastoDiv").hide();
+        } else {
+            gastoVista = true;
+            modGastoEstado = true;
+            $("#gastoDiv").load("inc/gastosFicha.html #gastoCampos", function () {
+                $(".add").hide();
+                $(".mod").hide();
+                selectTarjeta = $("#TARJETA_ID");
+                cargaTarjetasUsuario(selectTarjeta, $("#USUARIO_ID").val());
+                $(".soloGasto").empty();
+                tarjetaId = $("#gasto option:selected").attr("TARJETA_ID");
+                importeGasto = $("#gasto option:selected").attr("IMPORTE");
+                descripcionGasto = $("#gasto option:selected").attr("DESCRIPCION");
+                urlGasto = $("#gasto option:selected").attr("URL");
+                $("#DESCRIPCION").val(descripcionGasto);
+                $("#IMPORTE").val(importeGasto);
+                $("#TARJETA_ID option[value='" + tarjetaId + "']").attr("selected", true);
+                //foto recibo
+                if (existe(urlGasto)) {
+                    $("#gastoDemo").attr('src', 'img/gasto/' + urlGasto);
+                }
+                $("#FOTO").change(function () {
+                vistaPrevia(this, "#gastoDemo");
+    }
+    );
+            });
+            $("#gastoDiv").show();
+        }
+    });
+
+    $("#addComentario").click(function () {
+        $("#erroresIncidencias").empty();
+        erroresSalida = "";
+         //Nuevo Parte
+         if(parteVista){
+            //Añadimos clase campos
+            $(".campoParte").addClass("camposDatos");
+            $(".campoParte").attr("desc","horario");
+            //realizamos dates
+            var hinicioParte =$("#FECHA").val()+" "+$('#hentrada').val()+":"+$('#mentrada').val();
+            var hfinParte = $("#FECHA").val()+" "+$('#hsalida').val()+":"+$('#msalida').val();  
+            minutosInicio = parseInt($('#hentrada').val())*60+parseInt($('#mentrada').val());
+            minutosSalida =  parseInt($('#hsalida').val())*60+parseInt($('#msalida').val());
+            if(minutosSalida-minutosInicio<0){
+                erroresSalida += "<p>La fecha de salida es anterior a la del inicio</p>";
+            }else{
+                $("#fechaEntrada").val(hinicioParte+":00");
+                $("#fechaSalida").val(hfinParte+":00");
+            }
+        }
+        //Cerrar Parte
+        if(modParteEstado){
+             //Añadimos clase campos
+             $(".campoParte").addClass("camposDatos");
+             $(".campoParte").attr("desc","horario");
+            //realizamos dates
+            var hinicioParte =$("#FECHA").val()+" "+$('#hentrada').val()+":"+$('#mentrada').val();
+            var hfinParte = $("#FECHA").val()+" "+$('#hsalida').val()+":"+$('#msalida').val();  
+            minutosInicio = parseInt($('#hentrada').val())*60+parseInt($('#mentrada').val());
+            minutosSalida =  parseInt($('#hsalida').val())*60+parseInt($('#msalida').val());
+            if(minutosSalida-minutosInicio<0){
+                erroresSalida += "<p>La fecha de salida es anterior a la del inicio</p>";
+            }else{
+                $("#fechaEntrada").val(hinicioParte+":00");
+                $("#fechaSalida").val(hfinParte+":00");
+            }
+        }
+
+        //Campos vacios
+        $(".camposDatos").each(function () {
+            $(this).focus(function () {
+                $(this).removeClass("bg-warning");
+            })
+            if (!existe($(this).val())) {
+                erroresSalida += "<p>el campo esta vacío de " + $(this).attr("desc") + "</p>";
+                $(this).addClass("bg-warning");
+            }
+        });
+       
+        if (existe(erroresSalida)) {
+            $("#erroresIncidencias").html(erroresSalida);
+            $("#erroresIncidencias").show();
+        } else {
+            $("#tipo").attr("disabled",false);
+            addComentario("#incidenciaFichaForm",addParteVariable,addGastoVariable,modParteEstado,modGastoEstado);
+            $("#tipo").attr("disabled",true);
+        }
+    });
+
+    $("#addCerrarComentario").click(function () {
+        $("#erroresIncidencias").empty();
+        $("#estado").val("cerrado");
+        erroresSalida = "";
+         //Nuevo Parte
+         if(parteVista){
+            //Añadimos clase campos
+            $(".campoParte").addClass("camposDatos");
+            $(".campoParte").attr("desc","horario");
+            //realizamos dates
+            var hinicioParte =$("#FECHA").val()+" "+$('#hentrada').val()+":"+$('#mentrada').val();
+            var hfinParte = $("#FECHA").val()+" "+$('#hsalida').val()+":"+$('#msalida').val();  
+            minutosInicio = parseInt($('#hentrada').val())*60+parseInt($('#mentrada').val());
+            minutosSalida =  parseInt($('#hsalida').val())*60+parseInt($('#msalida').val());
+            if(minutosSalida-minutosInicio<0){
+                erroresSalida += "<p>La fecha de salida es anterior a la del inicio</p>";
+            }else{
+                $("#fechaEntrada").val(hinicioParte+":00");
+                $("#fechaSalida").val(hfinParte+":00");
+            }
+        }
+        //Cerrar Parte
+        if(modParteEstado){
+             //Añadimos clase campos
+             $(".campoParte").addClass("camposDatos");
+             $(".campoParte").attr("desc","horario");
+            //realizamos dates
+            var hinicioParte =$("#FECHA").val()+" "+$('#hentrada').val()+":"+$('#mentrada').val();
+            var hfinParte = $("#FECHA").val()+" "+$('#hsalida').val()+":"+$('#msalida').val();  
+            minutosInicio = parseInt($('#hentrada').val())*60+parseInt($('#mentrada').val());
+            minutosSalida =  parseInt($('#hsalida').val())*60+parseInt($('#msalida').val());
+            if(minutosSalida-minutosInicio<0){
+                erroresSalida += "<p>La fecha de salida es anterior a la del inicio</p>";
+            }else{
+                $("#fechaEntrada").val(hinicioParte+":00");
+                $("#fechaSalida").val(hfinParte+":00");
+            }
+        }
+
+        //Campos vacios
+        $(".camposDatos").each(function () {
+            $(this).focus(function () {
+                $(this).removeClass("bg-warning");
+            })
+            if (!existe($(this).val())) {
+                erroresSalida += "<p>el campo esta vacío de " + $(this).attr("desc") + "</p>";
+                $(this).addClass("bg-warning");
+            }
+        });
+       
+        if (existe(erroresSalida)) {
+            $("#erroresIncidencias").html(erroresSalida);
+            $("#erroresIncidencias").show();
+        } else {
+            $("#tipo").attr("disabled",false);
+            addComentario("#incidenciaFichaForm",addParteVariable,addGastoVariable,modParteEstado,modGastoEstado);
+            $("#tipo").attr("disabled",true);
+        }
+    });
+
+    //DISPLAY
+    $("#modGastoIncidencia").hide();
+    $("#modParte").hide();
+    $("#parteDiv").hide();
+    $("#gastoDiv").hide();
+    $("#erroresIncidencias").hide();
+
+    
+
+</script> 

@@ -1,0 +1,223 @@
+<div id="listadoIncidencias"></div>
+<br>
+<div class="row">
+  <div class="col">
+    <button class="btn btn-primary" id="nuevaIncidencia"><span class='fas fa-marker'></span> Nueva Incidencia</button>
+  </div>
+  <div class="col-4">
+    <button class="btn btn-danger" id="creaPdf"><span class='fas fa-print'></span> Imprimir/Exportar </button>
+    <button class="btn btn-success" id="creaExcel"><span class='fas fa-file-excel'></span> Crear excel</button>
+  </div>
+</div>
+
+<script>
+  //FUNCIONES--------------------------------------------------------------------------------------
+
+
+  //DESGLOSE PARTES ----------------------------------------------------
+  var table = new Tabulator("#listadoIncidencias", {
+    persistence: true,
+    ajaxURL: "back/servidor.php", //ajax URL
+    dataLoaderLoading: "Un momento!",
+    progressiveLoad: "scroll",
+    placeholder: "Un momento, por favor",
+    ajaxConfig: "POST", //ajax HTTP request type
+    ajaxParams: { listadoIncidencias: "ok" },
+    height: "700px",
+    width: "100%",
+    layout: "fitColumns",
+    persistence: {
+      sort: true, //persist sort
+    },
+    initialSort: [
+      { column: "FECHA", dir: "desc" }, //sort by this first
+
+    ],
+    rowClick: function (e, row) {
+      //Abre la Incidencia
+      var refElegido = row.getData();
+      console.log(refElegido);
+      //MODIFICAR INCIDENCIAS
+      $("#tituloModal").html("<h5>INCIDENCIA Nº " + refElegido.ID + "</h5>");
+      $("#cuerpoModal").load("inc/incidenciaFicha.html", function () {
+        usuarioSelect = $("#USUARIO_ID");
+        cargaUsuarios(usuarioSelect);
+        //Rellenar datos de Campos
+        $("#incidenciaId").val(refElegido.ID);
+        $("#estado").val(refElegido.ESTADO);
+        $("#tipo").val(refElegido.TIPO);
+        $("#MOTIVO").append(refElegido.MOTIVO);
+        $("#FECHA").val(refElegido.FECHA);
+        $("#USUARIO_ID option[value=" + refElegido.USUARIO_ID + "]").attr('selected', 'selected');
+        //CARGAR PARTES Y GASTOS
+        fecha = $("#FECHA").val();
+        usuario = $("#USUARIO_ID").val();
+        //RESETEAMOS VARIABLES Y VISTAS
+        parteVista = false;
+        gastoVista = false;
+        modParteEstado = false;
+        modGastoEstado = false;
+        addParteVariable = false;
+        addGastoVariable = false;
+        $("#modGastoIncidencia").hide();
+        $("#modParte").hide();
+        $("#parteDiv").hide();
+        $("#gastoDiv").hide();
+        $("#erroresIncidencias").hide();
+        $("#gastoDiv").empty();
+        if (existe(fecha) && existe(usuario) && usuario != 'no') {
+          //PARTES
+          parteSelect = $("#parte");
+          cargaPartes(parteSelect, fecha, usuario);
+          $("#parte").prop("disabled", false);
+          $("#partediv").empty();
+          $("#partediv").hide();
+          //GASTOS
+          gastoSelect = $("#gasto");
+          gastoSelect.empty();
+          cargaGastoIncidencia(gastoSelect, fecha, usuario);
+          $("#gasto").prop("disabled", false);
+          $("#gastoDiv").empty();
+          $("#gastoDiv").hide();
+        } else {
+          $("#parte").empty();
+          $("#parte").append("<option value='no'>Sin Partes</option>");
+          $("#gasto").empty();
+          $("#gasto").append("<option value='no'>Sin Gastos</option>");
+          $("#parte").prop("disabled", true);
+          $("#gasto").prop("disabled", true);
+        }
+        $("#parte option[value=" + refElegido.PARTE_ID + "]").attr('selected', 'selected');
+        $("#gasto option[value=" + refElegido.GASTO_ID + "]").attr('selected', 'selected');
+
+        //MODIFICACION DOM
+        //--PARTE
+        if ($("#parte").val() == 'no') {
+          $("#addParte").show();
+          $("#modParte").hide();
+
+        } else {
+          $("#addParte").hide();
+          horaSalida = $("#parte option:selected").attr("hfin");
+          if (horaSalida == ' - ') {
+            $("#modParte").show();
+          } else {
+            $("#modParte").hide();
+          }
+        }
+        //--GASTO
+        if ($("#gasto").val() == 'no') {
+          $("#addGastoIncidencia").show();
+          $("#modGastoIncidencia").hide();
+
+        } else {
+          $("#addGastoIncidencia").hide();
+          if (horaSalida = ' - ') {
+            $("#modGastoIncidencia").show();
+          } else {
+            $("#modGastoIncidencia").hide();
+          }
+        }
+        //LISTADO ITEMS
+        var table = new Tabulator("#listadoItems", {
+          persistence: true,
+          ajaxURL: "back/servidor.php", //ajax URL
+          dataLoaderLoading: "Un momento!",
+          progressiveLoad: "scroll",
+          placeholder: "Un momento, por favor",
+          ajaxConfig: "POST", //ajax HTTP request type
+          ajaxParams: { listadoItems: "ok",
+                        IncId: refElegido.ID },
+          width: "100%",
+          layout: "fitColumns",
+          persistence: {
+            sort: true, //persist sort
+          },
+          initialSort: [
+            { column: "TMS", dir: "asc" }, //sort by this first
+
+          ],
+          columns: [
+            {
+              title: "Nº", field: "ID", width: 50, headerFilter: "input",
+            },
+            {
+              title: "USUARIO", field: "USUARIO", headerFilter: "input"
+            },
+            {
+              title: "FECHA", field: "TMS", width: 150, headerFilter: "input", headerFilter: minMaxFilterEditor, headerFilterFunc: minMaxFilterFunction, headerFilterLiveFilter: false,
+              formatter: "datetime", formatterParams: {
+                inputFormat: "YYYY-MM-DD HH:mm:ss",
+                outputFormat: "DD-MM-YYYY",
+              }
+            },
+            {
+              title: "DESCRIPCIÓN", field: "DESCRIPCION", headerFilter: "input"
+            },
+          ],
+        });
+        //SI ESTA CERRADO
+        if($("#estado").val() == "cerrado"){
+          $("#botonesAcciones").hide();
+          $(".accionesPartes").hide();
+          $(".accionesGastos").hide();
+          $("#incidenciaFicha input").attr("disabled",true);
+          $("#incidenciaFicha textarea").attr("disabled",true);
+          $("#incidenciaFicha select").attr("disabled",true);
+        }
+      });
+      $("#modalDiv").modal("show");
+    },
+    columns: [
+      {
+        title: "Nº", field: "ID", width: 50, headerFilter: "input",
+      },
+      {
+        title: "FECHA", field: "FECHA", width: 150, headerFilter: "input", headerFilter: minMaxFilterEditor, headerFilterFunc: minMaxFilterFunction, headerFilterLiveFilter: false,
+        formatter: "datetime", formatterParams: {
+          inputFormat: "YYYY-MM-DD",
+          outputFormat: "DD-MM-YYYY",
+        }
+      },
+      {
+        title: "USUARIO", field: "USUARIO", headerFilter: "input"
+      },
+      {
+        title: "MOTIVO", field: "MOTIVO", headerFilter: "input", width: 450
+      },
+      {
+        title: "ESTADO", field: "ESTADO", headerFilter: "input", width: 150, hozAlign: "center"
+      }
+    ],
+  });
+
+  $("#creaPdf").click(function () {
+    console.log("crearPDF");
+    cuerpo = table.getHtml();
+    cabecera = "<!DOCTYPE html><html lang='es'><head><meta charset='UTF-8'><meta http-equiv='X-UA-Compatible' content='IE=edge'><meta name='viewport' content='width=device-width, initial-scale=1.0'><title>Listado</title>" +
+      "</head><style>.tabulator-print-table{width: 100%;border-style: solid;}.tabulator-print-table-row{border-style: solid;text-align: center;}</style><body>";
+    pie = "</body></html>";
+    salidaHtml = cabecera + cuerpo + pie;
+    var x = window.open();
+    x.document.open();
+    x.document.write(salidaHtml);
+    x.print()
+    x.document.close();
+  });
+
+  $("#creaExcel").click(function () {
+    console.log("crearExcel");
+    table.download("xlsx", "partes.xlsx")
+  });
+
+  $("#nuevaIncidencia").click(function () {
+    $("#tituloModal").html("<h5>NUEVA INCIDENCIA</h5>");
+    $("#cuerpoModal").load("inc/incidenciaFicha.html", function () {
+      $("#incidenciaId").val("nuevo");
+      $("#estado").val("abierto");
+      selectUsuarios = $("#USUARIO_ID");
+      cargaUsuarios(selectUsuarios);
+    });
+    $("#modalDiv").modal("show");
+  });
+</script>

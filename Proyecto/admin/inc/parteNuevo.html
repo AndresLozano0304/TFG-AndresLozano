@@ -1,0 +1,95 @@
+<div class="card p-2" style='font-size: 12px;'>
+    <h1>NUEVO PARTE MANUAL</h1>
+      <label for="fechaParte" class="form-label">Fecha <span class='far fa-calendar-check'></span></label>
+      <div class="input-group mb-3">
+          <input name='fechaParte' id='fechaParte' type="date" class="form-control camposDatos" desc='fecha'>
+        </div>
+        <div class="row">
+            <div class="col-6">
+              <label for="hentrada" class="form-label">Hora Entrada <span class="far fa-clock"></span>
+              </label>
+              <div class="input-group mb-3">
+              <input type="number" class="form-control camposDatos" id='hentrada' step='1' min='0' max='23' desc='hora de entrada'>
+                   <span class="input-group-text">:</span>
+                   <input type="number" class="form-control camposDatos" id='mentrada' step='1' min='0' max='59' desc='minutos de entrada'>
+                 </div>
+            </div>
+            <div class="col-6">
+              <label for="hsalida" class="form-label">Hora Salida <span class="fas fa-stopwatch"></span></label>
+              <div class="input-group mb-3">
+                   <input type="number" class="form-control camposDatos" id='hsalida' step='1' min='0' max='23' desc='hora de salida'>
+                   <span class="input-group-text">:</span>
+                   <input type="number" class="form-control camposDatos" id='msalida' step='1' min='0' max='59' desc='minutos de salida'>
+                 </div>
+            </div>
+        </div>
+        
+         <select class="form-select" id='empleadoSelect'>
+          <option selected value = ''>Selecciona Empleado</option>
+        </select>
+        <div class="mb-3">
+          <label for="observacionesInput" class="form-label">Observaciones</label>
+          <textarea class="form-control" id="observacionesInput" rows="1"></textarea>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-2">
+            </div>
+            <div class="col-8">
+              <div class="btn-group" role="group">
+                  <button type="button" class="btn btn-success" id='aceptarParteManual'>Aceptar</button>
+                  <button type="button" class="btn btn-secondary" id='cerrarParteManual'>Cerrar</button>
+                </div>
+            </div>
+            <div class="col-2"></div>
+        </div>
+    
+      <br>
+      <div class="alert alert-danger" id='errores'>
+      </div>
+</div>
+
+<script>
+    //DISPLAY
+    $("#errores").hide();
+
+    //DISPARADORES
+    $("#cerrarParteManual").click(function(){
+        eliminaspam();
+    });
+    $("#aceptarParteManual").click(function(){
+      $("#errores").empty();
+      $("#errores").hide();
+      console.log("aceptarParte");
+      //realizamos dates
+      var hinicioParte =$("#fechaParte").val()+" "+$('#hentrada').val()+":"+$('#mentrada').val();
+      var hfinParte = $("#fechaParte").val()+" "+$('#hsalida').val()+":"+$('#msalida').val();  
+      //verificamos campos
+      var erroresSalida = "";
+      //campos vacios
+      $(".camposDatos").each(function(){
+        $(this).focus(function(){
+          $(this).removeClass("bg-warning");
+        })
+        if(!existe($(this).val())){
+          erroresSalida+="<p>el campo esta vacío de "+$(this).attr("desc")+"</p>";
+          $(this).addClass("bg-warning");
+        }
+      });
+   
+     if(!existe($('#empleadoSelect').val())){
+      erroresSalida+="<p>No se ha seleccionado ningún trabajador</p>";
+     }
+     if(!existe($('#observacionesInput').val())){
+      erroresSalida+="<p>No se ha escrito ninguna observación.</p>";
+     }
+     //verificamos la salida
+     if(existe(erroresSalida)){
+        $("#errores").html(erroresSalida);
+        $("#errores").show('slow');
+     }else{
+      $("#errores").hide();
+      addParteManual(hinicioParte,hfinParte,$('#empleadoSelect').val(),$('#observacionesInput').val());
+     }
+    });
+</script>

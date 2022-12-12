@@ -1,0 +1,105 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+
+body{
+  font-family: 'Roboto', cursive;
+}
+
+.file-select {
+    position: relative;
+    display: inline-block;
+    content: 'Foto seleccionada'; /* texto por defecto */
+    width: 100%;
+  }
+  
+  .file-select::before {
+    background-color: #5678EF;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 3px;
+    height: 80px;
+    content: attr(texto); /* texto por defecto */
+    position: absolute;
+    margin-bottom: 5px;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+
+  }
+  
+  .file-select input[type="file"] {
+    opacity: 0;
+    width: 100%;
+    height: 85px;
+    display: inline-block;
+    content: 'foto recibida'; /* texto por defecto */
+  }
+
+  #aviso{
+    width: 100%; 
+    height: 100%; 
+    position: fixed; 
+    top: 0px; 
+    left: 0px; 
+    opacity: 0.6;
+    background:#000;
+    z-index: 2; 
+ }
+ 
+ #mensaje{
+     display: block;
+     top: 30%; 
+     left: 50%;
+     margin-left: -30%;
+     width: 0%;
+     max-height: 50%;
+     font-size: 20px;
+     padding: 12px; 
+     position: fixed;
+     border-radius: 3px;
+     text-align: center;
+     background-color:#ffffff;
+     opacity: 0.9;
+     scroll-behavior: auto;
+     z-index: 5;
+ }
+
+ #main{
+     max-width: 1000px;
+     z-index: 1;
+ }
+
+ .navbar-left{
+     position: absolute;
+     right: 5px;
+     margin-right: 2px;
+     z-index:4;
+     
+ }
+
+ #contenido{
+     height: 100%;
+     background-color: #54595F;
+     padding-bottom: 900px;
+
+ }
+
+ .letrero{
+  font-family: 'Bebas Neue', cursive;
+  position: fixed;
+  z-index: 100;
+  bottom: 5px;
+  left: 5px;
+  width: 60%;
+
+ }
+
+ .box{
+
+  background: linear-gradient(to left, green, white); 
+ }

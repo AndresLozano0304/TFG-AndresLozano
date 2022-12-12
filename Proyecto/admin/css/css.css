@@ -1,0 +1,183 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+
+body{
+  font-family: 'Roboto', cursive;
+}
+
+.file-select {
+    position: relative;
+    display: inline-block;
+    content: 'Foto seleccionada'; /* texto por defecto */
+    width: 100%;
+  }
+  
+  .file-select::before {
+    background-color: #5678EF;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 3px;
+    height: 100%;
+    content: "📸  Subir Foto"; /* texto por defecto */
+    position: absolute;
+    margin-bottom: 5px;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+
+  }
+  
+  .file-select input[type="file"] {
+    opacity: 0;
+    width: 100%;
+    height: 85px;
+    display: inline-block;
+    content: 'foto recibida'; /* texto por defecto */
+  }
+
+  #aviso{
+    width: 100%; 
+    height: 100%; 
+    position: fixed; 
+    top: 0px; 
+    left: 0px; 
+    opacity: 0.6;
+    background:#000;
+    z-index: 1000000000; 
+ }
+ 
+ #mensaje{
+     display: block;
+     top: 30%; 
+     left: 50%;
+     margin-left: -30%;
+     width: 60%;
+     max-height: 50%;
+     font-size: 20px;
+     padding: 12px; 
+     position: fixed;
+     border-radius: 3px;
+     text-align: center;
+     background-color:#ffffff;
+     opacity: 0.9;
+     scroll-behavior: auto;
+     z-index: 1000000001;
+ }
+
+ #main{
+   width: 100%;
+
+ }
+
+ #loginAcceso{
+  max-width: 500px;
+  z-index: 1;
+}
+
+ .navbar-left{
+     position: absolute;
+     right: 5px;
+     margin-right: 2px;
+     z-index:4;
+     
+ }
+
+ #contenido{
+     height: 100%;
+     background-color: #7A7A7A;;
+     padding-bottom: 900px;
+ }
+
+ .letrero{
+  font-family: 'Bebas Neue', cursive;
+  position: fixed;
+  z-index: 1;
+  bottom: 5px;
+  left: 5px;
+  width: 60%;
+
+ }
+
+
+ /* MENU */
+ /* Shrinking the sidebar from 250px to 80px and center aligining its content*/
+#sidebar.active {
+  min-width: 105px;
+  max-width: 105px;
+  text-align: center;
+}
+
+#menuLateral.active {
+  width: 105px;
+  text-align: center;
+}
+
+/* Toggling the sidebar header content, hide the big heading [h3] and showing the small heading [strong] and vice versa*/
+#sidebar .sidebar-header strong {
+  display: none;
+}
+#sidebar.active .sidebar-header h3 {
+  display: none;
+}
+#sidebar.active .sidebar-header strong {
+  display: block;
+}
+
+#sidebar ul li div {
+  text-align: left;
+}
+
+#sidebar.active ul li div {
+  padding: 20px 10px;
+  text-align: center;
+  font-size: 0.85em;
+}
+
+#sidebar.active ul li div i {
+  margin-right:  2px;
+  display: block;
+  text-align: center;
+  font-size: 1.0em;
+  margin-bottom: 2px;
+}
+
+/* Same dropdown links padding*/
+#sidebar.active ul ul a {
+  padding: 10px !important;
+}
+
+/* Changing the arrow position to bottom center position, 
+ translateX(50%) works with right: 50% 
+ to accurately  center the arrow */
+#sidebar.active .dropdown-toggle::after {
+  top: auto;
+  bottom: 10px;
+  right: 50%;
+  -webkit-transform: translateX(50%);
+  -ms-transform: translateX(50%);
+  transform: translateX(50%);
+}
+
+#sidebar{
+  /* padding-right: 50px; */
+  width: 250px;
+  height:100vh; 
+}
+
+.pointed{
+  cursor: pointer;
+}
+
+.fotoEmpleado{
+  border-radius: 50% 50% 50% 50%;
+}
+
+.marcador{
+  font-size: 500%;
+  color: white;
+}

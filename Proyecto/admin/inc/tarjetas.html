@@ -1,0 +1,105 @@
+<div id="listadoTarjetas"></div>
+<br>
+<div class="row">
+    <div class="col">
+        <button class="btn btn-primary" id="nuevaTarjeta"><span class='fas fa-credit-card'></span>  Nueva Tarjeta</button>
+    </div>
+    <div class="col-4">
+        <button class="btn btn-danger" id="creaPdf"><span class='fas fa-print'></span>  Imprimir/Exportar </button> 
+        <button class="btn btn-success" id="creaExcel"><span class='fas fa-file-excel'></span>  Crear excel</button> 
+    </div>
+</div>
+
+<script>
+    //FUNCIONES--------------------------------------------------------------------------------------
+   
+
+    //DESGLOSE PARTES ----------------------------------------------------
+    var table = new Tabulator("#listadoTarjetas", {
+      persistence:true,
+      ajaxURL: "back/servidor.php", //ajax URL
+      dataLoaderLoading: "Un momento!",
+      progressiveLoad:"scroll",
+      placeholder: "Un momento, por favor",
+      ajaxConfig: "POST", //ajax HTTP request type
+      ajaxParams: { listadoTarjetas: "ok" },
+      height: "700px",
+      width: "100%",
+      layout: "fitColumns",
+      persistence: {
+        sort: true, //persist sort
+      },
+      initialSort: [
+        { column: "NOMBRE", dir: "asc" }, //sort by this first
+
+      ],
+      rowClick:function(e,row){
+        var refElegido = row.getData().ID;
+        //MODIFICAR TARJETA
+        $("#tituloModal").html("<h5>MODIFICAR "+refElegido+"</h5>");
+        $("#cuerpoModal").load("inc/tarjetasFicha.html",function(){
+          usuarioSelect = $("#usuario");
+          cargaUsuarios(usuarioSelect); 
+            $("#addTarjeta").hide();
+            $("#modTarjeta").show();
+            $("#delTarjeta").show();
+            usuArray = datosTarjeta(refElegido);
+            //Rellenar datos de Campos
+            $("#idTarjeta").val(usuArray['ID']);
+            $("#nombreTarjeta").val(usuArray['NOMBRE']);
+            $("#numero").val(usuArray['NUMERO']);
+            $("#usuario option[value="+usuArray['USUARIO_ID']+"]").attr('selected', 'selected');
+            
+        });
+        $("#modalDiv").modal("show");
+      },
+      columns: [
+          {formatter:"rowSelection", width:10, titleFormatter:"rowSelection", hozAlign:"center", headerSort:false, cellClick:function(e, cell){
+             cell.getRow().toggleSelect();
+          }   },
+        {
+          title: "Nº", field: "ID", width: 50, headerFilter: "input",
+        },
+        {
+          title: "USUARIO", field: "USUARIO", headerFilter: "input"
+        },
+        {
+          title: "NOMBRE", field: "NOMBRE", headerFilter: "input"
+        },
+        {
+          title: "NUMERO", field: "NUMERO", headerFilter: "input"
+        }
+      ],
+    });
+
+    $("#creaPdf").click(function(){
+      console.log("crearPDF");
+      cuerpo = table.getHtml();
+      cabecera = "<!DOCTYPE html><html lang='es'><head><meta charset='UTF-8'><meta http-equiv='X-UA-Compatible' content='IE=edge'><meta name='viewport' content='width=device-width, initial-scale=1.0'><title>Listado</title>"+
+      "</head><style>.tabulator-print-table{width: 100%;border-style: solid;}.tabulator-print-table-row{border-style: solid;text-align: center;}</style><body>";
+      pie = "</body></html>";
+      salidaHtml = cabecera+cuerpo+pie;
+      var x=window.open();
+      x.document.open();
+      x.document.write(salidaHtml);
+      x.print()
+      x.document.close();
+    });
+
+    $("#creaExcel").click(function(){
+      console.log("crearExcel");
+      table.download("xlsx", "partes.xlsx")
+    });
+
+    $("#nuevaTarjeta").click(function(){
+      $("#tituloModal").html("<h5>NUEVA TARJETA</h5>");
+      $("#cuerpoModal").load("inc/tarjetasFicha.html",function(){
+        $("#accion").val("nuevo");
+        $("#modTarjeta").hide();
+        $("#delTarjeta").hide();
+        usuarioSelect = $("#usuario");
+        cargaUsuarios(usuarioSelect); 
+      });
+      $("#modalDiv").modal("show");
+    });
+</script>

@@ -1,0 +1,16 @@
+<div id="cambiaHorarioDiv">
+    <input type="text" id="seleccion" hidden>
+    <select class="form-select" id="HORARIO">
+    </select>
+<br>
+<button class="btn btn-block btn-primary" id="cambiaHorarioAccion">Cambiar Horario</button>
+</div>
+
+<script>
+ horarioSelect = $("#HORARIO");
+cargaHorario(horarioSelect);
+
+$("#cambiaHorarioAccion").click(function(){
+    cambiaHorario($("#seleccion").val(),$("#HORARIO").val());
+});
+</script>

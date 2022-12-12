@@ -1,0 +1,144 @@
+<div id="listadoGastos"></div>
+<br>
+<div class="row">
+  <div class="col">
+    <button class="btn btn-primary" id="nuevoGasto"><span class='fas fa-ticket-alt'></span> Nuevo Gasto</button>
+  </div>
+  <div class="col-4">
+    <button class="btn btn-danger" id="creaPdf"><span class='fas fa-print'></span> Imprimir/Exportar </button>
+    <button class="btn btn-success" id="creaExcel"><span class='fas fa-file-excel'></span> Crear excel</button>
+  </div>
+</div>
+
+<script>
+  //FUNCIONES--------------------------------------------------------------------------------------
+
+
+  //DESGLOSE PARTES ----------------------------------------------------
+  var table = new Tabulator("#listadoGastos", {
+    persistence: true,
+    ajaxURL: "back/servidor.php", //ajax URL
+    dataLoaderLoading: "Un momento!",
+    progressiveLoad: "scroll",
+    placeholder: "Un momento, por favor",
+    ajaxConfig: "POST", //ajax HTTP request type
+    ajaxParams: { listadoGastos: "ok" },
+    height: "700px",
+    width: "100%",
+    layout: "fitColumns",
+    persistence: {
+      sort: true, //persist sort
+    },
+    initialSort: [
+      { column: "NOMBRE", dir: "asc" }, //sort by this first
+
+    ],
+    rowClick: function (e, row) {
+      var refElegido = row.getData();
+      console.log(refElegido);
+      //MODIFICAR TARJETA
+      $("#tituloModal").html("<h5>MODIFICAR "+refElegido.ID+"</h5>");
+      $("#cuerpoModal").load("inc/gastosFicha.html",function(){
+        $("#addGasto").hide();
+        $("#modGasto").show();
+        $("#delGasto").show();
+        usuarioSelect = $("#USUARIO_ID");
+        cargaUsuarios(usuarioSelect);
+        selectTarjeta = $("#TARJETA_ID");
+        cargaTarjetasUsuario(selectTarjeta,refElegido.USUARIO_ID );
+        //Rellenar datos de Campos
+         $("#idGasto").val(refElegido.ID);
+         $("#DESCRIPCION").val(refElegido.DESCRIPCION);
+         $("#FECHA").val(refElegido.FECHA);
+         $("#IMPORTE").val(refElegido.IMPORTE);
+         $("#USUARIO_ID option[value="+refElegido.USUARIO_ID+"]").attr('selected', 'selected');
+         $("#TARJETA_ID option[value='"+refElegido.TARJETA_ID+"']").attr('selected', 'selected');
+         //FOTO
+         if(existe(refElegido.URL)){
+              $("#gastoDemo").attr('src', 'img/gasto/'+refElegido.URL);
+            }
+
+       });
+      $("#modalDiv").modal("show");
+    },
+    columns: [
+      {
+        formatter: "rowSelection", width: 10, titleFormatter: "rowSelection", hozAlign: "center", headerSort: false, cellClick: function (e, cell) {
+          cell.getRow().toggleSelect();
+        }
+      },
+      {
+        title: "Nº", field: "ID", width: 50, headerFilter: "input",
+      },
+      {
+        title: "USUARIO", field: "USUARIO", headerFilter: "input"
+      },
+      {
+        title: "FECHA", field: "FECHA", width: 150, headerFilter: "input", headerFilter: minMaxFilterEditor, headerFilterFunc: minMaxFilterFunction, headerFilterLiveFilter: false,
+        formatter: "datetime", formatterParams: {
+          inputFormat: "YYYY-MM-DD",
+          outputFormat: "DD-MM-YYYY",
+        }
+      },
+      {
+        title: "DESCRIPCIÓN", field: "DESCRIPCION", headerFilter: "input"
+      },
+      {
+        title: "IMPORTE", field: "IMPORTE", headerFilter: "input", width: 100, formatter: "money",  hozAlign:"right", formatterParams: {
+          decimal: ",",
+          thousand: ".",
+          symbol:" €",
+          symbolAfter:"p",
+          precision: false,
+        }
+      },
+      {
+        title: "RECIBO", field: "URL", download: false, width: 70, formatter: function (cell, formatterParams, onRendered) {
+          //cell - the cell component
+          //formatterParams - parameters set for the column
+          //onRendered - function to call when the formatter has been rendered
+          foto = cell.getValue();
+          if (existe(foto)) {
+            return "<img src='img/gasto/" + foto + "' class='fotoGasto' height='50px' width='50px'>";
+          } else {
+            return "<img src='img/gasto/gasto.png' class='fotoGasto'  height='50px' width='50px'>";
+          }
+        },
+        cellClick: function (e, cell) {
+          foto = cell.getValue();
+        }
+      }
+    ],
+  });
+
+  $("#creaPdf").click(function () {
+    console.log("crearPDF");
+    cuerpo = table.getHtml();
+    cabecera = "<!DOCTYPE html><html lang='es'><head><meta charset='UTF-8'><meta http-equiv='X-UA-Compatible' content='IE=edge'><meta name='viewport' content='width=device-width, initial-scale=1.0'><title>Listado</title>" +
+      "</head><style>.tabulator-print-table{width: 100%;border-style: solid;}.tabulator-print-table-row{border-style: solid;text-align: center;}</style><body>";
+    pie = "</body></html>";
+    salidaHtml = cabecera + cuerpo + pie;
+    var x = window.open();
+    x.document.open();
+    x.document.write(salidaHtml);
+    x.print()
+    x.document.close();
+  });
+
+  $("#creaExcel").click(function () {
+    console.log("crearExcel");
+    table.download("xlsx", "partes.xlsx")
+  });
+
+  $("#nuevoGasto").click(function () {
+    $("#tituloModal").html("<h5>NUEVO GASTO</h5>");
+    $("#cuerpoModal").load("inc/gastosFicha.html", function () {
+      $("#accion").val("nuevo");
+      $("#modGasto").hide();
+      $("#delGasto").hide();
+      usuarioSelect = $("#USUARIO_ID");
+      cargaUsuarios(usuarioSelect);
+    });
+    $("#modalDiv").modal("show");
+  });
+</script>

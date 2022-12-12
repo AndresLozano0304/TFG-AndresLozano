@@ -1,0 +1,171 @@
+
+
+
+<div id="Formfechas" class="card bg-light p-2 m-2">
+  <div class="input-group input-group-sm">
+    <div class="input-group-prepend">
+      <span class="input-group-text" id="inputGroup-sizing-sm">Desde: </span>
+    </div>
+    <input class="form-control" type="date" id='fecha_inicio' aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+      <span class="input-group-text" id="inputGroup-sizing-sm">Hasta: </span>
+    <input class="form-control"  type="date" id='fecha_final' aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+    <div class="input-group-append">
+      <button class="btn btn-primary" type="button" id="buscarFechas"><span class='fa fa-search'></span> Buscar</button>
+    </div>
+  </div>
+ 
+</div>
+ 
+
+<br>
+<div id="listadoPartes"></div>
+<br>
+<div class="row">
+    <div class="col">
+        <button class="btn btn-primary" id="nuevoParteManual"><span class='fas fa-signature'></span>  Nuevo Parte</button>
+    </div>
+    <div class="col-4">
+        <button class="btn btn-danger" id="creaPdf"><span class='fas fa-print'></span>  Imprimir/Exportar </button> 
+        <button class="btn btn-success" id="creaExcel"><span class='fas fa-file-excel'></span>  Crear excel</button> 
+    </div>
+</div>
+
+<script>
+
+
+  
+
+
+
+    //FUNCIONES--------------------------------------------------------------------------------------
+   
+    
+    //DESGLOSE PARTES ----------------------------------------------------
+
+    var table = new Tabulator("#listadoPartes", {
+      persistence:true,
+      ajaxURL: "back/servidor.php", //ajax URL
+      dataLoaderLoading: "Un momento!",
+      progressiveLoad:"scroll",
+      placeholder: "Un momento, por favor",
+      ajaxConfig: "POST", //ajax HTTP request type
+      ajaxParams: { desglosePartes: "ok" },
+      height: "700px",
+      width: "100%",
+      layout: "fitColumns",
+      persistence: {
+        sort: true, //persist sort
+      },
+      initialSort: [
+        { column: "HINICIO", dir: "asc" }, //sort by this first
+
+      ],
+      columns: [
+        {
+          title: "Nº", field: "ID", width: 100, headerFilter: "input",
+        },
+        {
+          title: "FECHA", field: "HINICIO", width: 150, headerFilter: "input", headerFilter: minMaxFilterEditor, headerFilterFunc: minMaxFilterFunction, headerFilterLiveFilter: false,
+          formatter: "datetime", formatterParams: {
+            inputFormat: "YYYY-MM-DD HH:mm:ss",
+            outputFormat: "DD-MM-YYYY",
+          }
+        },
+        {
+          title: "NOMBRE", field: "NOMBRE", headerFilter: "input"
+        },
+        {
+          title: "DNI", field: "DNI", width: 200, headerFilter: "input"
+        },
+        {
+          title: "ENTRADA", field: "HINICIO", width: 150,
+          formatter: "datetime", formatterParams: {
+            inputFormat: "YYYY-MM-DD HH:mm:ss",
+            outputFormat: "HH:mm:ss",
+          }
+        },
+        {
+          title: "SALIDA", field: "HFIN", width: 150,
+          formatter: "datetime", formatterParams: {
+            inputFormat: "YYYY-MM-DD HH:mm:ss",
+            outputFormat: "HH:mm:ss",
+          }
+        },
+        {
+          title: "OBSERVACIONES", field: "OBSERVACIONES",headerFilter: "input"
+        },
+        {
+          title: "FIRMA", field: "FIRMA", width: 150, download:false, formatter:"image", formatterParams:{
+            height:"90px",
+            urlPrefix:"data:image/jpeg;base64,",
+            urlSuffix:"",
+
+        }
+        },
+      ],
+    });
+
+
+
+    $("#creaPdf").click(function(){
+      console.log("crearPDF");
+      cuerpo = table.getHtml();
+      cabecera = "<!DOCTYPE html><html lang='es'><head><meta charset='UTF-8'><meta http-equiv='X-UA-Compatible' content='IE=edge'><meta name='viewport' content='width=device-width, initial-scale=1.0'><title>Listado</title>"+
+      "</head><style>.tabulator-print-table{width: 100%;border-style: solid;}.tabulator-print-table-row{border-style: solid;text-align: center;}</style><body>";
+      pie = "</body></html>";
+      salidaHtml = cabecera+cuerpo+pie;
+      var x=window.open();
+      x.document.open();
+      x.document.write(salidaHtml);
+      x.print()
+      x.document.close();
+    });
+
+    $("#creaExcel").click(function(){
+      console.log("crearExcel");
+      table.download("xlsx", "partes.xlsx")
+    });
+
+    $("#nuevoParteManual").click(function(){
+      info("");
+      $("#mensaje").load("inc/parteNuevo.html",function(){
+        //cargar Usuarios;
+        selectUsuarios = $("#empleadoSelect");
+        cargaUsuarios(selectUsuarios);  
+      });
+    });
+
+
+  
+
+$("#buscarFechas").click(function (){
+
+
+var fecha_inicio = $("#fecha_inicio").val();
+var fecha_final = $("#fecha_final").val();
+
+$.ajax(
+        {
+            type: "POST",
+            url: 'back/servidor.php',
+            data: {
+              hinicio:fecha_inicio,
+              hfin:fecha_final,
+              partesFiltrado:"okay"},
+            success: function(data)
+            {
+              listado=JSON.parse(data);
+              console.log(data)
+              table.setData(listado);
+          },
+        error: function () {
+            alert("No se puede conectar al Servidor o no estas registrado");
+        },
+      });
+   
+});
+
+
+
+
+</script>

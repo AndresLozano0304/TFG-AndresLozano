@@ -1,0 +1,58 @@
+<div id="loginAcceso" style="background-color: #97C01F;">
+    <div class="card row justify-content-center " style='margin-top: 10%'>
+        <div class="card-body col-auto text-center" style="background-color: white;">
+            <img src="./img/LogoConFondo.PNG" width="150px" alt="">
+            <br>
+            <br>
+            <h5 style="color: #7A7A7A; font-family: 'Roboto', cursive;">ALR - Panel administración</h5>
+            <link rel="shortcut icon" href="./img/LogoConFondo.PNG">
+            <div class="mb-3">
+                <form id="signup-form">
+                    <br>
+                    <label for="usuario" class='form-label'
+                        style="color: #7A7A7A; font-family: 'Roboto', cursive;">Usuario</label>
+                    <input type="text" class="form-control" name='usuario' id='usuario'>
+                    <label for="pass" class='form-label'
+                        style="color: #7A7A7A; font-family: 'Roboto', cursive;">Password</label>
+                    <input type="password" class="form-control" name='pass' id='pass'
+                        style="margin-left: 10; margin-right :20%;">
+                    <br>
+                    <button type="submit" class="btn btn-primary" id='acceder'
+                        style="background-color: #97C01F;">Aceptar</button>
+                </form>
+            </div>
+        </div>
+        <br>
+        <div id="presentacion" class="mb-3" style='text-align: center;background-color: white;'>
+            <p>Gestionado por<a href='https://www.linkedin.com/in/andres-lozano-ramos-4b4381204/' target='_blank'><b> Andres Lozano</b></a></p>
+        </div>
+    </div>
+    <br>
+</div>
+<br>
+<script>
+
+    //DISPARADOR
+    $("#acceder").click(function () {
+        acceso = new Object;
+        acceso = login($("#usuario").val(), $("#pass").val());
+        espera();
+        console.log(acceso)
+        setTimeout(function () {
+            if (acceso != null) {
+                anuncio("Bienvenido " + acceso['NOMBRE'] + " " + acceso['PRIMERAPELLIDO']);
+                datosAcceso(acceso);
+                
+            } else {
+                anuncio("Hay algún error o no tienes acceso");
+            }
+            eliminaspam();
+        }, 1500);
+
+    });
+
+    $("form").submit(function (e) {
+        e.preventDefault();
+    });
+
+</script>

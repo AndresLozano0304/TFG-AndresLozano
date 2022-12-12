@@ -1,0 +1,169 @@
+<br>
+<div id="login" style='width:300px; z-index:-1'>
+  <div id="abrirParte" class='card mb-1'>
+    <button type="button" class="btn btn-primary btn-block" id='iniciar'>Iniciar Parte 🧾</button>
+    <div id="zonaFirma" class='zonas'>
+      <div id='firma'></div>
+      <input type="text" id='firmaInput' hidden>
+      <div id="opcionesFirma" class='m-1'>
+        <div class="row">
+          <div class="col-4">
+            <div class="btn btn-sm btn-secondary" id="borraFirma">🚮 Borrar</div>
+          </div>
+          <div class="col-8">
+            <div class="btn btn-success d-md-block" id="enviar">Enviar</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="cerrarParte" class='card mb-1'>
+    <button type="button" class="btn btn-danger btn-block" id='parar'>Cerrar Parte 🏃‍♀️</button>
+  </div>
+  <!-- <div id="gastos" class='card mb-1'>
+    <button type="button" class="btn btn-secondary btn-block" id='gastoBoton'>Añadir Gasto 🎫</button>
+    <div id="zonaGastos" class='zonas'>
+      <div class="row">
+        <div class="col-md-12">
+            <div class="form-group" style="position: static;">
+                <label for="Importe">Importe</label>
+                <input type="number" class="form-control" id="importe" step="0.01" min=0>
+            </div>
+            <br>
+            <div class="file-select" id="foto1">
+              <input type="file" name="foto1" aria-label="Archivo">
+          </div>
+        </div>
+    </div>
+    </div>
+  </div> -->
+  <div id="incidencias" class='card mb-1'>
+    <button type="button" class="btn btn-secondary btn-block" id='incidenciaVer'>Incidencias ✍</button>
+    <div id="zonaIncidencias" class='zonas p-1'>
+      <form method="post">
+        <div class="form-group ">
+          <label class="control-label requiredField" for="date">
+            <b>Fecha incidencia*</b>
+          </label>
+          <div class="form-group">
+            <input class="form-control camposDatos" id="fecha" name="fecha" type="date" desc="fecha" />
+          </div>
+
+        </div>
+        <div class="form-group ">
+          <label class="control-label requiredField">
+            <b>Motivo</b>
+            </span>
+          </label>
+          <select class="form-select camposDatos" id="motivo" name="motivo" desc="motivo"
+            aria-label="Default select example">
+            <option value="olvido">Olvido</option>
+            <option value="incidenciaWeb">Incidencia Web</option>
+            <option value="otros">otros</option>
+          </select>
+          <div class="form-group ">
+            <label class="control-label " for="descripcion">
+              <b>Descripción</b>
+            </label>
+            <textarea class="form-control camposDatos" desc='descripcion' cols="40" id="descripcion" name="descripcion"
+              rows="10"></textarea>
+          </div>
+          <div class="form-group">
+            <div>
+              <button class="btn btn-primary btn-sm btn-block" id='enviarIncidencia' name="enviarIncidencia"
+                type="aceptar">
+                Aceptar
+              </button>
+            </div>
+          </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div id="avisos" class="alert alert-info letrero" role="alert">
+
+</div>
+
+<script>
+
+
+  //FIRMA 
+  var firma = $("#firma");
+  firma.jSignature({ color: 'blue', width: '100%', height: '250px', "background-color": "antiquewhite" });
+  $("#borraFirma").click(function () {
+    firma.jSignature("reset");
+  });
+  $("#firma").change(function () {
+    var baseFirma = firma.jSignature("getData");
+    $("#firmaInput").val(baseFirma);
+  });
+
+  //DISPLAY
+  //$("#incidencias").hide();
+  $(".zonas").hide();
+  $(".letrero").hide();
+  $(".file-select").attr("texto", "📸 Seleccionar");
+
+  //DISPARADORES
+
+  $("#incidenciaVer").click(function () {
+    $("#zonaIncidencias").toggle("slow");
+  });
+
+  // $("#gastoBoton").click(function () {
+  //   $("#zonaGastos").toggle("slow");
+  //   $(".file-select input[type='file']").val("");
+  //   $("#importe").val("");
+  //   $(".file-select").attr("texto", "📸 Seleccionar");
+  // });
+
+  // $(".file-select input[type='file']").change(function () {
+  //       $(this).parent().attr("texto", "Archivo Cargado");
+  //   });
+
+  $("#parar").click(function () {
+    cerrarParte(idParteAbierto);
+  })
+
+  $("#enviar").click(function () {
+    firmaValor = ($("#firmaInput").val()).split(",");
+    abrirParte(firmaValor[1]);
+  });
+
+  $("#enviarIncidencia").click(function () {
+    //Revisamos campos
+    erroresSalida = "";
+    $(".camposDatos").each(function () {
+      $(this).focus(function () {
+        $(this).removeClass("bg-warning");
+      })
+      if (!existe($(this).val())) {
+        erroresSalida += "<p>el campo esta vacío de " + $(this).attr("desc") + "</p>";
+        $(this).addClass("bg-warning");
+      }
+    });
+    if (!existe(erroresSalida)) {
+      enviarIncidencia($("#fecha").val(), $("#motivo").val(), $("#descripcion").val());
+    } else {
+      aviso(erroresSalida);
+    }
+  });
+
+  $("#iniciar").click(function () {
+    canvasTexto = $("#firma").find(".jSignature")[0].outerHTML;
+    //Ver si width se ha convertido en 0;
+    widthExiste = canvasTexto.includes("width=\"0\"");
+    if (widthExiste) {
+      $("#firma").find(".jSignature").removeAttr("width");
+      firma.jSignature("reset");
+    }
+    $("#zonaFirma").toggle("slow");
+  });
+
+
+  $("form").submit(function (e) {
+    e.preventDefault();
+  })
+
+</script>

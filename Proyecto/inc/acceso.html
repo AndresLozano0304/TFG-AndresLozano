@@ -1,0 +1,45 @@
+<head>
+    <link rel="shortcut icon" href="./img/logo.PNG">
+</head>
+<div id="login" style="background-color: #97C01F;">
+    
+    <div class="card row justify-content-center" style='margin-top: 10%;'>
+        <div class="card-body col-auto text-center">
+            <img src="./img/logo.PNG" width="150px " alt="">
+            <br>
+            <div class="mb-3">
+                <br>
+                <label for="usuario" class='form-label' style="color: #7A7A7A; font-family: 'Roboto', cursive;">Usuario</label>
+
+                <input type="text" class="form-control" name='usuario' id='usuario'>
+                <label for="pass" class='form-label'id="inicio" style="color: #7A7A7A; font-family: 'Roboto', cursive;margin-top: 10pt;">Password</label>
+                <input type="password" class="form-control" name='pass' id='pass'>
+                <br>
+                <button class="btn btn-primary" id='acceder' style="background-color: #97C01F;">Aceptar</button>
+            </div>
+        </div>
+        <br>
+        <div id="presentacion" class="mb-3" style='text-align: center'>
+            <p>Gestionado por<a href='https://www.linkedin.com/in/andres-lozano-ramos-4b4381204/' target='_blank'><b> Andres Lozano </b></a></p>
+            
+        </div>
+    </div>
+    <br>
+</div>
+    <br>
+<script>
+
+    //DISPARADOR
+   $("#acceder").click(function () {
+       acceso = new Object;
+       acceso = login($("#usuario").val(), $("#pass").val());
+       if (existe(acceso['ID'])){
+           datosAcceso(acceso);
+           anuncio("Bienvenido "+acceso['NOMBRE']+" "+acceso['PRIMERAPELLIDO']);
+           //anuncio("<div style='text-align: center'><img src='img/ok.gif' height='120px'><h5>Añadida la opción de enviar incidencias!</strong></h5></div>")
+       } else {
+           anuncio("Revise usuario y/o contraseña");
+       }
+   });
+
+</script>

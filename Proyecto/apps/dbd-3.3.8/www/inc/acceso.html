@@ -1,0 +1,41 @@
+<div id="login" >
+    <div class="card row justify-content-center" style='margin-top: 10%'>
+        <div class="card-body col-auto text-center">
+            <img src="img/dbd.jpg"width="90px" alt="">
+            <br>
+            <div class="mb-3">
+                <br>
+                <label for="usuario" class='form-label'>Usuario</label>
+                <input type="text" class="form-control" name='usuario' id='usuario'>
+                <label for="pass" class='form-label'>Pass</label>
+                <input type="password" class="form-control" name='pass' id='pass'>
+                <br>
+                <button class="btn btn-primary" id='acceder'>Aceptar</button>
+            </div>
+        </div>
+        <br>
+        <div id="presentacion" class="mb-3" style='text-align: center'>
+            <img src="https://voluta.es/wp-content/uploads/2020/06/cropped-logoSmall.png" width="150px"
+                alt="">
+            <p>Gestionado por <a href='https://www.voluta.es' target='_blank'><b>VOLUTA ESTUDIO</b></a></p>
+        </div>
+    </div>
+    <br>
+</div>
+    <br>
+<script>
+
+    //DISPARADOR
+   $("#acceder").click(function () {
+       acceso = new Object;
+       acceso = login($("#usuario").val(), $("#pass").val());
+       if (acceso != null){
+           datosAcceso(acceso);
+           //anuncio("Bienvenido "+acceso['NOMBRE']+" "+acceso['PRIMERAPELLIDO']);
+           anuncio("<div style='text-align: center'><img src='img/ok.gif' height='120px'><h5>Añadida la opción de enviar incidencias!</strong></h5></div>")
+       } else {
+           anuncio("Revise usuario y/o contraseña");
+       }
+   });
+
+</script>

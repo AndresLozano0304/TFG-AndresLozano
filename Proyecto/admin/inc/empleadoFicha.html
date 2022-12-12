@@ -1,0 +1,198 @@
+<form id="empleado" class='container'>
+        <input type='text' hidden id='accion' name='accion'>
+        <div class="row">
+                <div class="col-4 text-center" id='fotoForm'>
+                        <div class="fotoEmpleado" style='width:100%;'>
+                                <img src="img/empleados/generico.png" id='fotoDemo' alt="" class="fotoEmpleado"
+                                        style='width:120px; height: 120px;'>
+                        </div>
+                        <div class="form-group">
+                                <label for="FOTO">Foto</label>
+                                <input type="file" class="file-select" id="FOTO" name='FOTO'
+                                        accept="image/png, image/jpeg">
+                        </div>
+
+                </div>
+                <div class="col-8">
+
+                        <input id="NOMBREEMPRESA" name="NOMBREEMPRESA" class="form-control" value="Venais" hidden>
+
+                        <div class="form-group" id='usuarioDiv'>
+                                <label for="USUARIO" class="form-control-label">USUARIO
+                                        <b style='color:orange'>(*)</b></label>
+                                <div class="input-group">
+                                        <div class="input-group-prepend"><span class="input-group-text"><i
+                                                                class="fas fa-user-alt" aria-hidden="true"></i></span>
+                                        </div><input id="USUARIO_EMAIL" name="USUARIO_EMAIL" type="text" value=""
+                                                class="camposDatos form-control">
+                                </div>
+                        </div>
+                        <div class="form-group"><label for="PASSWORD" class="form-control-label">PASSWORD <b
+                                                style='color:orange'>(*)</b></label>
+                                <div class="input-group">
+                                        <div class="input-group-prepend"><span class="input-group-text"><i
+                                                                class="fas fa-lock" aria-hidden="true"></i></span></div>
+                                        <input id="PASSWORD" name="PASSWORD" type="password" value="" desc='contraseña'
+                                                class="camposDatos form-control">
+                                </div>
+                        </div>
+                        <br>
+                        <div class="form-group"><label class="main-label form-control-label">ACTIVO: <b
+                                                style='color:orange'>(*)</b></label>
+                                <div class="form-check form-check-inline">
+                                        <input type="radio" id="ACTIVO_1" name="ACTIVO" value="1"
+                                                class="form-check-input" checked>
+                                        <label for="ACTIVO_1" class="form-check-label">SI</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                        <input type="radio" id="ACTIVO_0" name="ACTIVO" value="0"
+                                                class="form-check-input">
+                                        <label for="ACTIVO_0" class="form-check-label">NO</label>
+                                </div>
+                        </div>
+                        <hr>
+                        <div class="form-group"><label for="ROL" class="form-control-label">ROL</label><select id="ROL"
+                                        name="ROL" class="form-control">
+                                        <option value="OPERARIO" selected="">OPERARIO</option>
+                                        <option value="RESPONSABLE">RESPONSABLE</option>
+                                        <option value="ADMINISTRADOR">ADMINISTRADOR</option>
+                                </select></div>
+                        <br>
+                        <input type="checkbox" id="TIENEGASTOS" name="TIENEGASTOS" value="0" class="form-check-input"
+                                hidden>
+                        <!-- <div class="form-group">
+                                
+                                <label for="GASTOS"> TIENE GASTOS</label>
+                        </div> -->
+                        <hr>
+                </div>
+
+                <div class="form-group"><label for="HORARIO" class="form-control-label">HORARIO</label><select
+                                id="HORARIO" name="HORARIO" class="form-control">
+
+                        </select></div>
+        </div>
+        </div>
+        <hr>
+        <div class="row">
+                <div class="col-12">
+                        <div class="form-group"><label for="nombre" class="form-control-label">Nombre <b
+                                                style='color:orange'>(*)</b></label>
+                                <input id="NOMBRE" name="NOMBRE" type="text" value="" placeholder="Nombre"
+                                        class="camposDatos form-control" desc='nombre'>
+                        </div>
+                        <div class="form-group">
+                                <label for="PRIMERAPELLIDO" class="form-control-label">Primer
+                                        Apellido <b style='color:orange'>(*)</b></label>
+                                <input id="PRIMERAPELLIDO" desc='Primer apellido' name="PRIMERAPELLIDO" type="text"
+                                        value="" placeholder="Primer Apellido" class="camposDatos form-control">
+                        </div>
+                        <div class="form-group"><label for="SEGUNDOAPELLIDO" class="form-control-label">Segundo
+                                        Apellido <b style='color:orange'></b></label>
+                                <input id="SEGUNDOAPELLIDO" desc='Segundo Apellido' name="SEGUNDOAPELLIDO" type="text"
+                                        value="" placeholder="Segundo Apellido" class="form-control">
+                        </div>
+                        <div class="form-group"><label for="DNI" class="form-control-label">DNI/NIE/PASAPORTE</label>
+                                <input id="DNI" name="DNI" type="text" value="" placeholder="00000000A"
+                                        class="form-control">
+                        </div>
+                        <div class="form-group"><label for="TELEFONO" class="form-control-label">TELÉFONO</label><input
+                                        id="TELEFONO" name="TELEFONO" type="number" value="" placeholder="699999999"
+                                        class="form-control"></div>
+                        <div class="form-group"><label for="DOMICILIO"
+                                        class="form-control-label">DIRECCIÓN</label><textarea id="DOMICILIO"
+                                        name="DOMICILIO" placeholder="Calle Salado 4, Sevilla"
+                                        class="form-control"></textarea></div>
+                </div>
+        </div>
+        <br>
+        <div class="row">
+                <div class="col-5">
+                </div>
+                <div class="col-2">
+                        <button type="button" class="btn btn-success btn-block" id='aceptarEmpleado'>Aceptar</button>
+                        <button type="button" class="btn btn-warning btn-block"
+                                id='modificarEmpleado'>Modificar</button>
+                </div>
+                <div class="col-5"></div>
+        </div>
+
+        <br>
+        <div class="alert alert-danger" id='errores'>
+        </div>
+</form>
+
+<script>
+        //DISPLAY
+        $("form").submit(function (e) {
+                e.preventDefault();
+        });
+        $("#errores").hide();
+        //DISPARADORES
+        $("#FOTO").change(function () {
+                vistaPrevia(this, "#fotoDemo");
+        }
+        );
+        $("#aceptarEmpleado").click(function () {
+                $("#errores").empty();
+                $("#errores").hide();
+                //verificamos campos
+                var erroresSalida = "";
+                //campos vacios
+                $(".camposDatos").each(function () {
+                        $(this).focus(function () {
+                                $(this).removeClass("bg-warning");
+                        })
+                        if (!existe($(this).val())) {
+                                erroresSalida += "<p>el campo esta vacío de " + $(this).attr("desc") + "</p>";
+                                $(this).addClass("bg-warning");
+                        }
+                });
+                //USUARIO
+                if (!existe(verificaUsuario($("#USUARIO_EMAIL").val()))) {
+                        $(this).val("");
+                        erroresSalida += "<p>Ya existe un usuario, pruebe con otro.</p>";
+                }
+                //verificamos la salida
+                if (existe(erroresSalida)) {
+                        $("#errores").html(erroresSalida);
+                        $("#errores").show('slow');
+                } else {
+                        $("#errores").hide();
+                        addUsuario("#empleado");
+                }
+        })
+
+        $("#modificarEmpleado").click(function () {
+                $("#errores").empty();
+                $("#errores").hide();
+                //verificamos campos
+                var erroresSalida = "";
+                //campos vacios
+                $(".camposDatos").each(function () {
+                        $(this).focus(function () {
+                                $(this).removeClass("bg-warning");
+                        })
+                        if (!existe($(this).val()) && existe($(this).attr("desc"))) {
+                                if ($(this).attr('id') != "PASSWORD") {
+                                        erroresSalida += "<p>el campo esta vacío de " + $(this).attr("desc") + ": " + $(this).val() + "</p>";
+                                        $(this).addClass("bg-warning");
+                                }
+                        }
+                });
+                //verificamos la salida
+                if (existe(erroresSalida)) {
+                        $("#errores").html(erroresSalida);
+                        $("#errores").show('slow');
+                } else {
+                        $("#errores").hide();
+                        modificaUsuario("#empleado");
+                }
+        })
+
+        //DISPLAY
+        horarioSelect = $("#HORARIO");
+        cargaHorario(horarioSelect);
+
+
+</script>

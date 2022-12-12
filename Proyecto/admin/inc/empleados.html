@@ -1,0 +1,149 @@
+<div id="listadoEmpleados"></div>
+<br>
+<div class="row">
+    <div class="col">
+        <button class="btn btn-primary" id="nuevoEmpleado"><span class='fas fa-address-card'></span>  Nuevo Empleado</button>
+        <button class="btn btn-secondary" id="cambiaHorario"><span class='far fa-calendar-plus'></span>  Cambio Masivo Horario</button>
+    </div>
+    <div class="col-4">
+        <button class="btn btn-danger" id="creaPdf"><span class='fas fa-print'></span>  Imprimir/Exportar </button> 
+        <button class="btn btn-success" id="creaExcel"><span class='fas fa-file-excel'></span>  Crear excel</button> 
+    </div>
+</div>
+
+<script>
+    //FUNCIONES--------------------------------------------------------------------------------------
+   
+
+    //DESGLOSE PARTES ----------------------------------------------------
+    var table = new Tabulator("#listadoEmpleados", {
+      persistence:true,
+      ajaxURL: "back/servidor.php", //ajax URL
+      dataLoaderLoading: "Un momento!",
+      progressiveLoad:"scroll",
+      placeholder: "Un momento, por favor",
+      ajaxConfig: "POST", //ajax HTTP request type
+      ajaxParams: { listadoPersonal: "ok" },
+      height: "700px",
+      width: "100%",
+      layout: "fitColumns",
+      persistence: {
+        sort: true, //persist sort
+      },
+      initialSort: [
+        { column: "USUARIO", dir: "asc" }, //sort by this first
+
+      ],
+      rowClick:function(e,row){
+        var usuarioElegido = row.getData().USUARIO_EMAIL;
+        //MODIFICAR USUARIO
+        $("#tituloModal").html("<h5>MODIFICAR "+usuarioElegido+"</h5>");
+        $("#cuerpoModal").load("inc/empleadoFicha.html",function(){
+            $("#accion").val(usuarioElegido);
+            $("#aceptarEmpleado").hide();
+            $("#usuarioDiv").hide();
+            usuArray = datosUsuario(usuarioElegido);
+            //Rellenar datos de Campos
+            $("#NOMBRE").val(usuArray['NOMBRE']);
+            $("#PRIMERAPELLIDO").val(usuArray['PRIMERAPELLIDO']);
+            $("#SEGUNDOAPELLIDO").val(usuArray['SEGUNDOAPELLIDO']);
+            $("#DNI").val(usuArray['DNI']);
+            $("#TELEFONO").val(usuArray['TELEFONO']);
+            $("#DOMICILIO").val(usuArray['DOMICILIO']);
+            $("#ROL option[value="+usuArray['ROL']+"]").attr('selected', 'selected');
+            $("#NOMBREEMPRESA option[value="+usuArray['NOMBREEMPRESA']+"]").attr('selected', 'selected');
+            $("#ROL option[value="+usuArray['ROL']+"]").attr('selected', 'selected');
+            $("#ACTIVO_"+usuArray['ACTIVO']).prop('checked', true);
+            $("#TIENEGASTOS[value="+usuArray['ACTIVO']+"]").prop('checked', true);
+            $("#HORARIO option[value='"+usuArray['HORARIO']+"']").attr('selected','selected');
+            //FOTO
+            if(existe(usuArray['FOTO'])){
+              $("#fotoDemo").attr('src', 'img/empleados/'+usuArray['FOTO']);
+            }
+            //PASSWORD
+            $("#PASSWORD").attr("placeholder","ESCRIBE NUEVA CONTRASEÑA");
+            $("#PASSWORD").val("");
+            
+      });
+      $("#modalDiv").modal("show");
+      },
+      columns: [
+          {formatter:"rowSelection", width:10, titleFormatter:"rowSelection", hozAlign:"center", headerSort:false, cellClick:function(e, cell){
+             cell.getRow().toggleSelect();
+          }   },
+        {
+          title: "Nº", field: "ID", width: 50, headerFilter: "input",
+        },
+        {
+          title: "FOTO", field: "FOTO", download:false, width: 70, formatter:function(cell, formatterParams, onRendered){
+            //cell - the cell component
+            //formatterParams - parameters set for the column
+            //onRendered - function to call when the formatter has been rendered
+            foto = cell.getValue();
+            if (existe(foto)){
+              return "<img src='img/empleados/"+foto+"' class='fotoEmpleado' height='50px' width='50px'>";
+            }else{
+              return "<img src='img/empleados/generico.png' class='fotoEmpleado'  height='50px' width='50px'>";
+            }
+          },
+        },
+        {
+          title: "USUARIO", field: "USUARIO_EMAIL", headerFilter: "input"
+        },
+        {
+          title: "NOMBRE", field: "NOMBRE", headerFilter: "input"
+        },
+        {
+          title: "1º APELLIDO", field: "PRIMERAPELLIDO", headerFilter: "input"
+        },
+        {
+          title: "2º APELLIDO", field: "SEGUNDOAPELLIDO", headerFilter: "input"
+        }
+        
+      ],
+    });
+
+
+
+    $("#creaPdf").click(function(){
+      console.log("crearPDF");
+      cuerpo = table.getHtml();
+      cabecera = "<!DOCTYPE html><html lang='es'><head><meta charset='UTF-8'><meta http-equiv='X-UA-Compatible' content='IE=edge'><meta name='viewport' content='width=device-width, initial-scale=1.0'><title>Listado</title>"+
+      "</head><style>.tabulator-print-table{width: 100%;border-style: solid;}.tabulator-print-table-row{border-style: solid;text-align: center;}</style><body>";
+      pie = "</body></html>";
+      salidaHtml = cabecera+cuerpo+pie;
+      var x=window.open();
+      x.document.open();
+      x.document.write(salidaHtml);
+      x.print()
+      x.document.close();
+    });
+
+    $("#creaExcel").click(function(){
+      console.log("crearExcel");
+      table.download("xlsx", "partes.xlsx")
+    });
+
+    $("#nuevoEmpleado").click(function(){
+      $("#tituloModal").html("<h5>NUEVO EMPLEADO</h5>");
+      $("#cuerpoModal").load("inc/empleadoFicha.html",function(){
+        $("#accion").val("nuevo");
+        $("#modificarEmpleado").hide();
+      });
+      $("#modalDiv").modal("show");
+    });
+
+    $("#cambiaHorario").click(function(){
+      seleccionado =  table.getSelectedData();
+      idArray = new Array;
+      $.each(seleccionado,function(key,value){
+        idArray.push(value['ID']);
+      });
+      //MODIFICAR HORARIO
+      $("#tituloModal").html("<h5>MODIFICAR HORARIO</h5>");
+        $("#cuerpoModal").load("inc/cambiaHorario.html",function(){
+            $("#seleccion").val(idArray.toString()); 
+      });
+      $("#modalDiv").modal("show");
+    })
+</script>

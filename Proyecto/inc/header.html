@@ -1,0 +1,48 @@
+  <nav  class="navbar navbar-expand-lg navbar-light" id='barra' ;>
+
+    <table style="width: 100%;">
+      <div style="background:white;">
+      <tr>
+        <td>
+        <a class="navbar-brand" href="#" id='logo' ><img src="./img/logo.png"width="150px" alt=""></a>
+        </td>
+        <td style=" width: 50%;  " >
+        <button style="float: right ;" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Toggle navigation" id="menuBoton">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="menu">
+        <ul class="shadow navbar-nav navbar-left m-1" id='listado'>
+        <li class="nav-item">
+          <p id='nombre'></p>
+        </li>
+        <li class="nav-item m-1">
+          <a class="btn btn-danger btn-block" href="#" id='desconectar'><i class="fas fa-power-off"></i>desconectar</a>
+        </li>
+
+      </ul>
+    </div>
+  </td>
+    </tr>
+  </div>
+  </table>
+  </nav>
+
+  <script>
+      //DISPARADORES
+      $("#menuBoton").click(function(){
+        $("#menu").toggle("slow");
+      });
+      $("#listado").blur(function(){
+        $("#menu").toggle("slow");
+      });
+
+      $("#desconectar").click(function(){
+        cerrarSession();
+        $("#header").empty();
+        $("#main").load("inc/acceso.html");
+      });
+      
+      
+  </script>
+
+

@@ -1,0 +1,154 @@
+<div id="tarjeta">
+    <form id='gastoForm' >
+        <div id="gastoCampos">
+             <!-- NUM.GASTO -->
+        <input type="text" id="idGasto" name="idGasto" hidden>
+        <!-- DESCRIPCIÓN GASTO -->
+        <div class="form-floating mb-3" id='divdescripcion'>
+            <input type="text" class="camposDatos form-control" id="DESCRIPCION" name="DESCRIPCION" desc='descripción del gasto'>
+            <label for="DESCRIPCION">Descripción</label>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <!-- IMPORTE GASTO -->
+                <div class="form-floating mb-3" id='divImporte'>
+                    <input type="number" setp='0.01' min=0 class="camposDatos form-control text-right" id="IMPORTE" name="IMPORTE"
+                        desc='importe del gasto'>
+                    <label for="IMPORTE">Importe</label>
+                </div>
+            </div>
+            <div class="col-6">
+                <!--FECHA GASTO -->
+                <div class="form-floating mb-3 soloGasto" id='divFecha'>
+                    <input type="date" class="camposDatos form-control" id="FECHA" name='FECHA'
+                        desc='fecha del gasto'>
+                    <label for="FECHA">Fecha</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- USUARIO -->
+        <div class="form-group soloGasto" id='divUsuario'>
+            <label for="USUARIO_ID">Trabajador</label>
+            <select id="USUARIO_ID" name="USUARIO_ID" class="camposDatos form-control " desc='trabajador del gasto'>
+            </select>
+        </div>
+        <!-- TARJETA -->
+        <div class="form-group" id='divTarjeta'>
+            <label for="TARJETA_ID">Tarjeta/Contado</label>
+            <select id="TARJETA_ID" name="TARJETA_ID" class="form-control camposDatos" desc='tipo del gasto'>
+                <option value="contado">Contado</option>
+            </select>
+        </div>
+        <!-- FOTO -->
+        <div class="text-center" id='fotoForm'>
+            <div class="row">
+                <div class="col-3"></div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="FOTO">Foto</label>
+                        <input type="file" class="file-select " id="FOTO" name='FOTO' accept="image/png, image/jpeg"
+                            style='cursor: pointer;'>
+                    </div>
+                </div>
+                <div class="col-3"></div>
+            </div>
+
+            <div class="fotoEmpleado" style='width:100%;'>
+                <img src="img/gasto/gasto.png" id='gastoDemo' alt="" class="" style='height: 400px;'>
+            </div>
+
+        </div>
+        <hr>
+        <!-- GASTO CREAR MOD BAJA-->
+        <div class="row">
+            <div class="col-8">
+                <button class="btn btn-secondary add" id='addGasto'>Añadir Gasto</button>
+                <button class="btn btn-secondary mod" id='modGasto'>Modificar Gasto</button>
+                <button class="btn btn-danger mod" id='delGasto'>Eliminar Gasto</button>
+                <button class="btn btn-danger mod" id='supGasto'><strong>Si, elimina Gasto</strong></button>
+            </div>
+        </div>
+        </div>
+       
+
+    </form>
+
+    <br>
+    <div id="errores" class='alert alert-danger add mod'></div>
+</div>
+
+<script>
+    //DISPARADORES
+    $("#addGasto").click(function () {
+        $("#errores").empty();
+        erroresSalida = "";
+        //Campos vacios
+        $(".camposDatos").each(function () {
+            $(this).focus(function () {
+                $(this).removeClass("bg-warning");
+            })
+            if (!existe($(this).val())) {
+                erroresSalida += "<p>el campo esta vacío de " + $(this).attr("desc") + "</p>";
+                $(this).addClass("bg-warning");
+            }
+        });
+        if (existe(erroresSalida)) {
+            $("#errores").html(erroresSalida);
+            $("#errores").show();
+        } else {
+
+            addGasto("#gastoForm");
+        }
+    });
+
+    $("#modGasto").click(function () {
+        $("#errores").empty();
+        erroresSalida = "";
+        //Campos vacios
+        $(".camposDatos").each(function () {
+            $(this).focus(function () {
+                $(this).removeClass("bg-warning");
+            })
+            if (!existe($(this).val())) {
+                erroresSalida += "<p>el campo esta vacío de " + $(this).attr("desc") + "</p>";
+                $(this).addClass("bg-warning");
+            }
+        });
+        if (existe(erroresSalida)) {
+            $("#errores").html(erroresSalida);
+            $("#errores").show();
+        } else {
+            modGasto("#gastoForm");
+        }
+    });
+
+    $("#FOTO").change(function () {
+        vistaPrevia(this, "#gastoDemo");
+    }
+    );
+
+    $("#USUARIO_ID").change(function () {
+        selectTarjeta = $("#TARJETA_ID");
+        console.log(selectTarjeta);
+        cargaTarjetasUsuario(selectTarjeta, $("#USUARIO_ID").val());
+
+    });
+
+    $("#delGasto").click(function () {
+        $("#supGasto").toggle();
+    });
+
+    $("#supGasto").click(function () {
+        borraGasto($("#idGasto").val());
+    });
+
+    //DISPLAY
+    $('form').submit(function (e) {
+        e.preventDefault();
+    })
+    $("#errores").hide();
+    $("#supGasto").hide();
+    $("#modGasto").hide();
+    $("#delGasto").hide();
+</script>

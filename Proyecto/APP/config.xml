@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="io.cordova.dbd" version="3.2.2" xmlns="http://www.voluta.es" xmlns:cdv="http://www.voluta.es">
+    <name>Control.Horario</name>
+    <description>Control Horario</description>
+    <author email="info@voluta.es" href="https://www.voluta.es">
+        Control Horario
+    </author>
+    <content src="index.html" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+     <icon src="www/img/dbd.jpg" />
+
+</widget>

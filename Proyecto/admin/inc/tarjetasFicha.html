@@ -1,0 +1,90 @@
+<div id="tarjeta">
+    <!-- NUM.TARJETA -->
+    <input type="text" id="idTarjeta" hidden>
+    <!-- NOMBRE TARJETA -->
+    <div class="form-floating mb-3">
+        <input type="text" class="camposDatos form-control" id="nombreTarjeta" desc='nombre de la tarjeta' placeholder="Banco DBD de Pedro">
+        <label for="nombre">Descripción de tarjeta</label>
+    </div>
+    <!-- NUM. TARJETA -->
+    <div class="form-floating mb-3">
+        <input type="text" class="camposDatos form-control" id="numero" desc='numero de la tarjeta' placeholder="50512050XXXXXXXXX">
+        <label for="numero">Número de tarjeta</label>
+    </div>
+    <!-- USUARIO -->
+    <div class="form-group">
+        <label for="usuario">Trabajador</label>
+        <select id="usuario" class="form-control datosParte">
+            <option value="no">Sin usuario</option>
+        </select>
+    </div>
+    <hr>
+     <!-- TARJETA CREAR MOD BAJA-->
+     <div class="row">
+        <div class="col-8">
+            <button class="btn btn-secondary" id='addTarjeta'>Añadir Tarjeta</button>
+            <button class="btn btn-secondary" id='modTarjeta'>Modificar Tarjeta</button>
+            <button class="btn btn-danger" id='delTarjeta'>Eliminar Tarjeta</button>
+            <button class="btn btn-danger" id='supTarjeta'><strong>Si, elimina Tarjeta</strong></button>
+        </div>
+    </div>
+    <br>
+    <div id="errores" class='alert alert-danger'></div>
+</div>
+
+<script>
+    //DISPARADORES
+    $("#addTarjeta").click(function(){
+        $("#errores").empty();
+        erroresSalida = "";
+        //Campos vacios
+        $(".camposDatos").each(function(){
+        $(this).focus(function(){
+          $(this).removeClass("bg-warning");
+        })
+        if(!existe($(this).val())){
+          erroresSalida+="<p>el campo esta vacío de "+$(this).attr("desc")+"</p>";
+          $(this).addClass("bg-warning");
+        }
+      });
+      if(existe(erroresSalida)){
+            $("#errores").html(erroresSalida);
+            $("#errores").show();
+        }else{
+            addTarjeta();
+        }
+    });
+
+    $("#modTarjeta").click(function(){
+        $("#errores").empty();
+        erroresSalida = "";
+        //Campos vacios
+        $(".camposDatos").each(function(){
+        $(this).focus(function(){
+          $(this).removeClass("bg-warning");
+        })
+        if(!existe($(this).val())){
+          erroresSalida+="<p>el campo esta vacío de "+$(this).attr("desc")+"</p>";
+          $(this).addClass("bg-warning");
+        }
+      });
+      if(existe(erroresSalida)){
+            $("#errores").html(erroresSalida);
+            $("#errores").show();
+        }else{
+            modTarjeta();
+        }
+    });
+
+    $("#delTarjeta").click(function(){
+       $("#supTarjeta").toggle();
+    });
+
+    $("#supTarjeta").click(function(){
+        borraTarjeta($("#idTarjeta").val());
+    });
+    
+    //DISPLAY
+    $("#errores").hide();
+    $("#supTarjeta").hide();
+</script>

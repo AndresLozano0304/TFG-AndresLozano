@@ -1,0 +1,364 @@
+<form id="horario" class='container'>
+        <input type="text" name="accion" id="accion" hidden>
+        <div><input name="fg-form-token" type="hidden" value="123650335661cb2d07bfd639.01232618"><input name="fg-form"
+                        type="hidden" value="1"></div>
+        <br>
+        <div class="form-group row justify-content-end"><label for="ref"
+                        class="col-sm-4 col-form-label">Referencia</label>
+                <div class="col-sm-8">
+                        <input id="ref" name="ref" type="text" value="" class="camposDatos form-control">
+                </div>
+        </div>
+        <br>
+        <div class="row">
+                <div class="col-6">
+                        <div class="form-group row justify-content-end"><label
+                                        class="main-label col-sm-4 col-form-label">DIAS
+                                        DE LA SEMANA</label>
+                                <div class="col-sm-8">
+                                        <div class="form-check justify-content-end">
+                                                <input type="checkbox" id="DS1L" name="DS1[][]" value="L"
+                                                        class="form-check-input DiaSemana"><label for="DS1L"
+                                                        class="form-check-label">LUNES</label>
+                                        </div>
+                                        <div class="form-check justify-content-end"><input type="checkbox" id="DS1M"
+                                                        name="DS1[][]" value="M" class="DiaSemana form-check-input"><label
+                                                        for="DS1[]_1" class="form-check-label">MARTES</label></div>
+                                        <div class="form-check justify-content-end"><input type="checkbox" id="DS1X"
+                                                        name="DS1[][]" value="X" class="DiaSemana form-check-input"><label
+                                                        for="DS1[]_2" class="form-check-label">MIERCOLES</label></div>
+                                        <div class="form-check justify-content-end"><input type="checkbox" id="DS1J"
+                                                        name="DS1[][]" value="J" class="DiaSemana form-check-input"><label
+                                                        for="DS1[]_3" class="form-check-label">JUEVES</label></div>
+                                        <div class="form-check justify-content-end"><input type="checkbox" id="DS1V"
+                                                        name="DS1[][]" value="V" class="DiaSemana form-check-input"><label
+                                                        for="DS1[]_4" class="form-check-label">VIERNES</label></div>
+                                        <div class="form-check justify-content-end"><input type="checkbox" id="DS1S"
+                                                        name="DS1[][]" value="S" class="DiaSemana form-check-input"><label
+                                                        for="DS1[]_5" class="form-check-label">SÁBADO</label></div>
+                                        <div class="form-check justify-content-end"><input type="checkbox" id="DS1D"
+                                                        name="DS1[][]" value="D" class="DiaSemana form-check-input"><label
+                                                        for="DS1[]_6" class="form-check-label">DOMINGO</label></div>
+                                </div>
+                        </div>
+                </div>
+                <div class="col-6">
+                        <h5>selecciona la hora de entrada y salida de los tramos, si la jornada es continua, rellena
+                                sólo el primer tramo</h5>
+                        <div class="row">
+                                <div class="col-6">
+                                        <label for="hentrada" class="form-label">Hora Entrada <span
+                                                        class="far fa-clock"></span>
+                                        </label>
+                                        <div class="input-group mb-3">
+                                                <input type="number" class="form-control camposDatos" id='hentrada11'
+                                                        step='1' min='0' max='23' desc='hora de entrada'>
+                                                <span class="input-group-text">:</span>
+                                                <input type="number" class="form-control camposDatos" id='mentrada11'
+                                                        step='1' min='0' max='59' desc='minutos de entrada'>
+                                        </div>
+                                </div>
+                                <div class="col-6">
+                                        <label for="hsalida" class="form-label">Hora Salida <span
+                                                        class="fas fa-stopwatch"></span></label>
+                                        <div class="input-group mb-3">
+                                                <input type="number" class="form-control camposDatos" id='hsalida11'
+                                                        step='1' min='0' max='23' desc='hora de salida'>
+                                                <span class="input-group-text">:</span>
+                                                <input type="number" class="form-control camposDatos" id='msalida11'
+                                                        step='1' min='0' max='59' desc='minutos de salida'>
+                                        </div>
+                                </div>
+                        </div>
+                        <div class="row">
+                                <div class="col-6">
+                                        <label for="hentrada" class="form-label">Hora Entrada <span
+                                                        class="far fa-clock"></span>
+                                        </label>
+                                        <div class="input-group mb-3">
+                                                <input type="number" class="form-control camposDatos" id='hentrada12'
+                                                        step='1' min='0' max='23' desc='hora de entrada'>
+                                                <span class="input-group-text">:</span>
+                                                <input type="number" class="form-control camposDatos" id='mentrada12'
+                                                        step='1' min='0' max='59' desc='minutos de entrada'>
+                                        </div>
+                                </div>
+                                <div class="col-6">
+                                        <label for="hsalida" class="form-label">Hora Salida <span
+                                                        class="fas fa-stopwatch"></span></label>
+                                        <div class="input-group mb-3">
+                                                <input type="number" class="form-control camposDatos" id='hsalida12'
+                                                        step='1' min='0' max='23' desc='hora de salida'>
+                                                <span class="input-group-text">:</span>
+                                                <input type="number" class="form-control camposDatos" id='msalida12'
+                                                        step='1' min='0' max='59' desc='minutos de salida'>
+                                        </div>
+                                </div>
+                        </div>
+                </div>
+
+        </div>
+        <hr>
+        <button class="btn btn-primary" id='botonHorarioDos'>Dias diferentes</button>
+        <br>
+        <div class="row" id='horarioDos'>
+                <hr>
+                <div class="col-6">
+                        <div class="form-group row justify-content-end"><label
+                                        class="camposDatos main-label col-sm-4 col-form-label">DIAS
+                                        DE LA SEMANA</label>
+                                <div class="col-sm-8">
+                                        <div class="form-check justify-content-end"><input type="checkbox" id="DS2L"
+                                                        name="DS2[][]" value="L" class="DiaSemana2 form-check-input"><label
+                                                        for="DS2L" class="form-check-label">LUNES</label></div>
+                                        <div class="form-check justify-content-end"><input type="checkbox" id="DS2M"
+                                                        name="DS2[][]" value="M" class="DiaSemana2 form-check-input"><label
+                                                        for="DS2[]_1" class="form-check-label">MARTES</label></div>
+                                        <div class="form-check justify-content-end"><input type="checkbox" id="DS2X"
+                                                        name="DS2[][]" value="X" class="DiaSemana2 form-check-input"><label
+                                                        for="DS2[]_2" class="form-check-label">MIERCOLES</label></div>
+                                        <div class="form-check justify-content-end"><input type="checkbox" id="DS2J"
+                                                        name="DS2[][]" value="J" class="DiaSemana2 form-check-input"><label
+                                                        for="DS2[]_3" class="form-check-label">JUEVES</label></div>
+                                        <div class="form-check justify-content-end"><input type="checkbox" id="DS2V"
+                                                        name="DS2[][]" value="V" class="DiaSemana2 form-check-input"><label
+                                                        for="DS2[]_4" class="form-check-label">VIERNES</label></div>
+                                        <div class="form-check justify-content-end"><input type="checkbox" id="DS2S"
+                                                        name="DS2[][]" value="S" class="DiaSemana2 form-check-input"><label
+                                                        for="DS2[]_5" class="form-check-label">SÁBADO</label></div>
+                                        <div class="form-check justify-content-end"><input type="checkbox" id="DS2D"
+                                                        name="DS2[][]" value="D" class="DiaSemana2 form-check-input"><label
+                                                        for="DS2[]_6" class="form-check-label">DOMINGO</label></div>
+                                </div>
+                        </div>
+                </div>
+                <div class="col-6">
+                        <h5>selecciona la hora de entrada y salida de los tramos, si la jornada es continua, rellena
+                                sólo el primer tramo</h5>
+                        <div class="row">
+                                <div class="col-6">
+                                        <label for="hentrada" class="form-label">Hora Entrada <span
+                                                        class="far fa-clock"></span>
+                                        </label>
+                                        <div class="input-group mb-3">
+                                                <input type="number" class="form-control camposDatos" id='hentrada21'
+                                                        step='1' min='0' max='23' desc='hora de entrada'>
+                                                <span class="input-group-text">:</span>
+                                                <input type="number" class="form-control camposDatos" id='mentrada21'
+                                                        step='1' min='0' max='59' desc='minutos de entrada'>
+                                        </div>
+                                </div>
+                                <div class="col-6">
+                                        <label for="hsalida" class="form-label">Hora Salida <span
+                                                        class="fas fa-stopwatch"></span></label>
+                                        <div class="input-group mb-3">
+                                                <input type="number" class="form-control camposDatos" id='hsalida21'
+                                                        step='1' min='0' max='23' desc='hora de salida'>
+                                                <span class="input-group-text">:</span>
+                                                <input type="number" class="form-control camposDatos" id='msalida21'
+                                                        step='1' min='0' max='59' desc='minutos de salida'>
+                                        </div>
+                                </div>
+                        </div>
+                        <div class="row">
+                                <div class="col-6">
+                                        <label for="hentrada" class="form-label">Hora Entrada <span
+                                                        class="far fa-clock"></span>
+                                        </label>
+                                        <div class="input-group mb-3">
+                                                <input type="number" class="form-control camposDatos" id='hentrada22'
+                                                        step='1' min='0' max='23' desc='hora de entrada'>
+                                                <span class="input-group-text">:</span>
+                                                <input type="number" class="form-control camposDatos" id='mentrada22'
+                                                        step='1' min='0' max='59' desc='minutos de entrada'>
+                                        </div>
+                                </div>
+                                <div class="col-6">
+                                        <label for="hsalida" class="form-label">Hora Salida <span
+                                                        class="fas fa-stopwatch"></span></label>
+                                        <div class="input-group mb-3">
+                                                <input type="number" class="form-control camposDatos" id='hsalida22'
+                                                        step='1' min='0' max='23' desc='hora de salida'>
+                                                <span class="input-group-text">:</span>
+                                                <input type="number" class="form-control camposDatos" id='msalida22'
+                                                        step='1' min='0' max='59' desc='minutos de salida'>
+                                        </div>
+                                </div>
+                        </div>
+                </div>
+
+        </div>
+        <hr>
+        <div class="row">
+                <div class="col-5">
+                </div>
+                <div class="col-2">
+                        <button type="button" class="btn btn-success btn-block" id='aceptarHorario'>Aceptar</button>
+                        <button type="button" class="btn btn-warning btn-block" id='modificarHorario'>Modificar</button>
+                </div>
+                <div class="col-5"></div>
+        </div>
+
+        <br>
+        <div class="alert alert-danger" id='errores'>
+        </div>
+</form>
+
+<script>
+        //DISPLAY
+        $("form").submit(function (e) {
+                e.preventDefault();
+        });
+        $("#errores").hide();
+        $("#horarioDos").hide();
+        var horarioDosExiste = false;
+        //DISPARADORES
+        //Horario 2
+        $("#botonHorarioDos").click(function(){
+              if(!horarioDosExiste){
+                horarioUnoverif = compruebaHorarioUno();
+              if(!existe(horarioUnoverif)){
+                $("#horarioDos").show();
+                horarioDosExiste = true;
+              }else{
+                      anuncio(horarioUnoverif);
+              }
+              }else{
+                horarioDosExiste = false;
+                $("#horarioDos").hide();     
+              }  
+              
+
+        });
+
+        //Cambios de check
+        $(".DiaSemana").change(function(){
+                dia = $(this);
+                var valor = dia.val();
+                if(dia.prop("checked")){
+                        
+                        switch (valor){
+                                case "L":
+                                        $("#DS2L").attr("disabled",true);
+                                break;
+                                case "M":
+                                        $("#DS2M").attr("disabled",true);
+                                break;
+                                case "X":
+                                        $("#DS2X").attr("disabled",true);
+                                break;
+                                case "J":
+                                        $("#DS2J").attr("disabled",true);
+                                break;
+                                case "V":
+                                        $("#DS2V").attr("disabled",true);
+                                break;
+                                case "S":
+                                        $("#DS2S").attr("disabled",true);
+                                break;
+                                case "D":
+                                        $("#DS2D").attr("disabled",true);
+                        }
+                }else{
+                        switch (valor){
+                                case "L":
+                                        $("#DS2L").attr("disabled",false);
+                                break;
+                                case "M":
+                                        $("#DS2M").attr("disabled",false);
+                                break;
+                                case "X":
+                                        $("#DS2X").attr("disabled",false);
+                                break;
+                                case "J":
+                                        $("#DS2J").attr("disabled",false);
+                                break;
+                                case "V":
+                                        $("#DS2V").attr("disabled",false);
+                                break;
+                                case "S":
+                                        $("#DS2S").attr("disabled",false);
+                                break;
+                                case "D":
+                                        $("#DS2D").attr("disabled",false);    
+                }
+        }
+        })
+
+        $(".DiaSemana2").change(function(){
+                dia = $(this);
+                var valor = dia.val();
+                if(dia.prop("checked")){
+                        
+                        switch (valor){
+                                case "L":
+                                        $("#DS1L").attr("disabled",true);
+                                break;
+                                case "M":
+                                        $("#DS1M").attr("disabled",true);
+                                break;
+                                case "X":
+                                        $("#DS1X").attr("disabled",true);
+                                break;
+                                case "J":
+                                        $("#DS1J").attr("disabled",true);
+                                break;
+                                case "V":
+                                        $("#DS1V").attr("disabled",true);
+                                break;
+                                case "S":
+                                        $("#DS1S").attr("disabled",true);
+                                break;
+                                case "D":
+                                        $("#DS1D").attr("disabled",true);
+                        }
+                }else{
+                        switch (valor){
+                                case "L":
+                                        $("#DS1L").attr("disabled",false);
+                                break;
+                                case "M":
+                                        $("#DS1M").attr("disabled",false);
+                                break;
+                                case "X":
+                                        $("#DS1X").attr("disabled",false);
+                                break;
+                                case "J":
+                                        $("#DS1J").attr("disabled",false);
+                                break;
+                                case "V":
+                                        $("#DS1V").attr("disabled",false);
+                                break;
+                                case "S":
+                                        $("#DS1S").attr("disabled",false);
+                                break;
+                                case "D":
+                                        $("#DS1D").attr("disabled",false);    
+                }
+        }
+        })
+
+        //Aceptar horario
+        $("#aceptarHorario").click(function(){
+                $("#errores").empty();
+                var erroresTexto = "";
+                erroresUno = compruebaHorarioUno();
+                erroresDos = compruebaHorarioDos();
+                erroresTexto += erroresUno;
+                if(horarioDosExiste){
+                        erroresTexto += erroresDos;
+                }
+                //REF
+                if(existeRefHorario($("#ref").val()) == 'ko' ||!existe($("#ref").val())){
+                        erroresTexto += "Existe esta referencia o está vacía, cambiela por favor. ";
+                }
+
+                //Añadir horario
+                if (existe(erroresTexto)){
+                        $("#errores").html(erroresTexto);
+                        $("#errores").show();
+                }else{
+                        addHorario();
+                }
+        })
+</script>
